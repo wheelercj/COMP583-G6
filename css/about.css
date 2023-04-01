@@ -1,0 +1,86 @@
+/*
+Programmer Name: Jong Won Lim
+*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+ 
+  body {
+    font-family: sans-serif;
+    color: #333;
+    background-color: rgb(194, 210, 240);
+  }
+
+  header {
+    background: rgb(112, 148, 214);
+    padding: 10px;
+    text-align: right;
+  }
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  nav a:hover {
+    color: #000;
+  }
+  
+  /* Style the main section */
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  main h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  main h2 {
+    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+  
+  main ul {
+    margin-left: 20px;
+  }
+  
+  main li {
+    margin-bottom: 10px;
+  }
+  
+  footer {
+    position: absolute;
+    bottom: 30px;
+    text-align: center;
+    left: 0;
+    right: 0;
+  }
+.copyright-text {
+    background-color: rgb(194, 210, 240);
+    display: inline-block;
+    padding: 10px 30px;
+  }
+.text-highlight {
+    color: white;
+  }
+.text-highlight:hover {
+    color: red;
+  }
+  

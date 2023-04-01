@@ -1,0 +1,76 @@
+/*
+Programmer Name: Miroo Yum
+*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+.container{
+    flex-direction: column;
+    align-items: center;
+    background: rgb(194, 210, 240);
+    width: 100%;
+    min-height: 100vh;
+    padding: 5%;
+    background-image: linear-gradient();
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+.header{
+    background: rgb(112, 148, 214);
+    padding: 10px;
+    text-align: right;
+}
+
+.header button{
+    background: transparent;
+    border-color:  rgb(0, 0, 0);
+    padding: 5px 10px;
+    font-size: 17px;
+}
+
+.Logo{
+    margin-bottom: 50px;
+}
+
+.searchbar{
+    width: 80%;
+    max-width: 700px;
+    background:mediumpurple ;
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 20px;
+    backdrop-filter: blur(4px) saturate(180%);
+}
+
+.searchbar input{
+    background: transparent;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: thistle;
+}
+::placeholder{
+    color: white;
+}
+
+.searchbar button img{
+    width: 60px;
+    border-radius: 50%;
+
+}
+.searchbar button{
+    border: 0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background: navajowhite;
+    cursor: pointer;
+}
