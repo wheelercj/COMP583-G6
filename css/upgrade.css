@@ -8,9 +8,10 @@ Programmer Name: Jong Won Lim
 }
 
 body {
+  background-image: url("../images/background.jpg");
+  background-size: cover;
   font-family: sans-serif;
   color: #333;
-  background-color: rgb(194, 210, 240);
 }
 
 header {
@@ -36,7 +37,7 @@ nav a {
 }
 
 nav a:hover {
-  color: #000;
+  color: #e70808;
 }
 
 /* Style the main section */
@@ -90,5 +91,5 @@ footer {
 }
 
 .text-highlight:hover {
-  color: red;
+  color: rgb(37, 7, 206);
 }

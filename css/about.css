@@ -8,9 +8,10 @@ Programmer Name: Jong Won Lim
   }
  
   body {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
     font-family: sans-serif;
     color: #333;
-    background-color: rgb(194, 210, 240);
   }
 
   header {
@@ -36,7 +37,7 @@ Programmer Name: Jong Won Lim
   }
   
   nav a:hover {
-    color: #000;
+    color: #e70808;
   }
   
   /* Style the main section */
@@ -49,20 +50,28 @@ Programmer Name: Jong Won Lim
   main h1 {
     font-size: 36px;
     margin-bottom: 20px;
+    font-family: fantasy;
   }
   
   main h2 {
-    font-size: 24px;
+    font-size: 36px;
     margin-top: 40px;
     margin-bottom: 10px;
+    font-family: fantasy;
   }
   
+  main p {
+    font-size: 20px;
+    font-family: monospace;
+  }
   main ul {
     margin-left: 20px;
   }
   
   main li {
+    font-size: 20px;
     margin-bottom: 10px;
+    font-family: monospace;
   }
   
   footer {
@@ -81,6 +90,6 @@ Programmer Name: Jong Won Lim
     color: white;
   }
 .text-highlight:hover {
-    color: red;
+    color: rgb(37, 7, 206);
   }
   
