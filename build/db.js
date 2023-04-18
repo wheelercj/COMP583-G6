@@ -11,12 +11,12 @@ require('dotenv').config();  // Loads env vars from `.env` to the `process.env` 
 var mysql = require('mysql2');
 
 var pool = mysql.createPool({
-	host: process.env['DB_HOST'],
+    host: process.env['DB_HOST'],
     port: '3306',
-	database: 'url_shortener',
-	user: 'admin',
-	password: process.env['DB_PASSWORD'],
-	ssl: 'Amazon RDS',
+    database: 'url_shortener',
+    user: 'admin',
+    password: process.env['DB_PASSWORD'],
+    ssl: 'Amazon RDS',
 });
 
 
@@ -27,7 +27,7 @@ function selectCurrentTimestamp() {
             connection.query(
                 `
                     SELECT CURRENT_TIMESTAMP;
-                `, 
+                `,
                 function (err, results, fields) {
                     connection.release();
                     if (err) reject(err);
@@ -48,7 +48,7 @@ selectCurrentTimestamp()
     });
 
 
-function insertShortUrl(originalUrl, shortUrl, userID) {
+function insertShortUrl(originalUrl, shortUrl, userId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -61,7 +61,7 @@ function insertShortUrl(originalUrl, shortUrl, userID) {
                 [
                     originalUrl,
                     shortUrl,
-                    userID
+                    userId
                 ],
                 function (err, results, fields) {
                     connection.release();
@@ -130,13 +130,13 @@ function insertAccount(email, password, type) {
 }
 
 
-function selectOriginalUrl(shortUrl) {
+function selectUrl(shortUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
                     FROM urls
                     WHERE shortUrl = ?;
                 `,
@@ -154,20 +154,18 @@ function selectOriginalUrl(shortUrl) {
 }
 
 
-function selectUserUrls(userID) {
+function selectUrl(urlId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
                     FROM urls
-                    WHERE userId = ?
-                        AND deleted IS NULL
-                        AND disabled IS NULL;
+                    WHERE id = ?;
                 `,
                 [
-                    userID
+                    urlId
                 ],
                 function (err, results, fields) {
                     connection.release();
@@ -180,7 +178,88 @@ function selectUserUrls(userID) {
 }
 
 
-function permanentlyDeleteAccount(userID) {
+function selectUrlClicks(urlId) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    SELECT id, time, ipv4, ipv6
+                    FROM clicks
+                    WHERE urlId = ?;
+                `,
+                [
+                    urlId
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function selectUserUrls(userId) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    SELECT id, originalUrl, shortUrl, created
+                    FROM urls
+                    WHERE userId = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
+                `,
+                [
+                    userId
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    UPDATE users
+                    SET email = ?,
+                        password = ?,
+                        linkRotNotifications = ?,
+                        linkMetricsReports = ?
+                    WHERE id = ?;
+                `,
+                [
+                    email,
+                    password,
+                    linkRotNotifications,
+                    linkMetricsReports,
+                    userId,
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function permanentlyDeleteAccount(userId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -190,7 +269,132 @@ function permanentlyDeleteAccount(userID) {
                     WHERE id = ?;
                 `,
                 [
-                    userID
+                    userId
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function editUrl(urlId, newOriginalUrl) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    UPDATE urls
+                    SET originalUrl = ?
+                    WHERE id = ?;
+                `,
+                [
+                    newOriginalUrl,
+                    urlId
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function editOriginalUrl(shortUrl, newOriginalUrl) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    UPDATE urls
+                    SET originalUrl = ?
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    newOriginalUrl,
+                    shortUrl
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function editShortUrl(urlId, newShortUrl) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    UPDATE urls
+                    SET shortUrl = ?
+                    WHERE urlId = ?;
+                `,
+                [
+                    newShortUrl,
+                    urlId
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function deleteUrl(shortUrl) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    UPDATE urls
+                    SET deleted = NOW()
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    shortUrl,
+                ],
+                function (err, results, fields) {
+                    connection.release();
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    });
+}
+
+
+function reportUrl(urlId, userId, reason) {
+    return new Promise(function (resolve, reject) {
+        pool.getConnection(function (error, connection) {
+            if (error) throw error;
+            connection.query(
+                `
+                    INSERT INTO userReports
+                    (urlId, userId, reason)
+                    VALUES (?, ?, ?);
+                `,
+                [
+                    urlId,
+                    userId,
+                    reason
                 ],
                 function (err, results, fields) {
                     connection.release();
