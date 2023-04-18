@@ -1,13 +1,13 @@
 /*
 Programmer Name: Chris Wheeler
 */
-const http = require("http");
+
 const fs = require("fs").promises;
+const express = require("express");
+const app = express();
+const port = 3000;
 
-const host = "localhost";
-const port = 8000;
-
-const server = http.createServer(function (req, res) {
+app.get("/", function (req, res) {
     fs.readFile(__dirname + "/index.html")
         .then(contents => {
             res.setHeader("Content-Type", "text/html");
@@ -21,6 +21,6 @@ const server = http.createServer(function (req, res) {
         });
 });
 
-server.listen(port, host, function () {
-    console.log(`Server running at http://${host}:${port}`);
+app.listen(port, function () {
+    console.log(`Server running at http://localhost:${port}`);
 });
