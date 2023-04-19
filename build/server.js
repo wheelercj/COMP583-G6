@@ -15,17 +15,17 @@ app.listen(3306, function () {
 });
 
 app.get("/", function (req, res) {
-    fs.readFile(__dirname + "/index.html")
-        .then(contents => {
-            res.setHeader("Content-Type", "text/html");
-            res.writeHead(200);
-            res.end(contents);
-        })
-        .catch(err => {
-            res.writeHead(500);
-            res.end(err);
-            return;
-        });
+    res.sendFile(path.join(__dirname + "/index.html"));
+        // .then(contents => {
+        //     res.setHeader("Content-Type", "text/html");
+        //     res.writeHead(200);
+        //     res.end(contents);
+        // })
+        // .catch(err => {
+        //     res.writeHead(500);
+        //     res.end(err);
+        //     return;
+        // });
 });
 
 app.get("/hello", function (req, res) {
