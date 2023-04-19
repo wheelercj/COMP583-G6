@@ -1,37 +1,34 @@
 /*
-        Programmer Name: Chris Wheeler
- */
-const http = require("http");
-const fs = require('fs').promises;
-const mysql = require("mysql2/promise");
+Programmer Name: Chris Wheeler
+*/
 
-const host = 'localhost';
-const port = 8000;
+const fs = require("fs").promises;
+const express = require("express");
+const app = express();
+const port = 3000;
 
-const connection = await mysql.createConnection({
-  host: 'your-hostname',
-  user: 'your-username',
-  password: 'your-password',
-  database: 'your-database-name'
+app.get("/", function (req, res) {
+    fs.readFile(__dirname + "/index.html")
+        .then(contents => {
+            res.setHeader("Content-Type", "text/html");
+            res.writeHead(200);
+            res.end(contents);
+        })
+        .catch(err => {
+            res.writeHead(500);
+            res.end(err);
+            return;
+        });
 });
 
-console.log("Connected to mySQL database");
+app.get("/hello", function (req, res) {
+    res.send("Hello World!");
+});
 
-const requestListener = function (req, res) {
-  fs.readFile(__dirname + "/index.html")
-    .then(contents => {
-      res.setHeader("Content-Type", "text/html");
-      res.writeHead(200);
-      res.end(contents);
-    })
-    .catch(err => {
-      res.writeHead(500);
-      res.end(err);
-      return;
-    });
-};
+app.get("/ip", function (req, res) {
+    res.send(`Your IP address is ${req.ip}`);
+});
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-  console.log(`Server is running on http://${host}:${port}`);
+app.listen(port, function () {
+    console.log(`Server running at http://localhost:${port}`);
 });
