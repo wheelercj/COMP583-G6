@@ -1,0 +1,123 @@
+/*
+Programmer Name: Jong Won Lim
+*/    
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: sans-serif;
+	color: #050505;
+	background-image: url("../images/background.jpg");
+	background-size: cover;
+	background-position: center;
+}
+
+header {
+	background-color: rgb(194, 210, 240);
+	padding: 10px;
+	text-align: right;
+}
+
+nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav li {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+nav a {
+	text-decoration: none;
+	color: #333;
+}
+
+nav a:hover {
+	color: #e70808;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+h1 {
+	font-size: 36px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+form {
+	background-color: #fff;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+input[type="submit"] {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	background-color: #008cba;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover {
+	background-color: #006d9c;
+}
+
+.error-message {
+	color: red;
+	margin-bottom: 10px;
+}
+
+footer {
+    position: absolute;
+    bottom: 30px;
+    text-align: center;
+    left: 0;
+    right: 0;
+}
+.copyright-text {
+    background-color: rgb(194, 210, 240);
+    display: inline-block;
+    padding: 10px 30px;
+  }
+  .text-highlight {
+    color: white;
+  }
+  
+  .text-highlight:hover {
+    color: rgb(37, 7, 206);
+  }

@@ -3,7 +3,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,database
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,database
 
-.DS_Store
+.DS_Store 
 ### Database ###
 *.accdb
 *.db
