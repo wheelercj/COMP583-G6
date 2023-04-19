@@ -3,10 +3,15 @@ import { selectCurrentTimestamp } from "./db.js";
 import fs from "fs/promises";
 import express from "express";
 const app = express();
-const port = 3000;
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-app.listen(port, function () {
-    console.log(`Server running at http://localhost:${port}`);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// The port must be the same as the one being used for MySQL.
+app.listen(3306, function () {
+    console.log("Server running at http://localhost:3306");
 });
 
 app.get("/", function (req, res) {
