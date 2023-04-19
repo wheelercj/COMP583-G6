@@ -21,6 +21,14 @@ app.get("/", function (req, res) {
         });
 });
 
+app.get("/hello", function (req, res) {
+    res.send("Hello World!");
+});
+
+app.get("/ip", function (req, res) {
+    res.send(`Your IP address is ${req.ip}`);
+});
+
 app.listen(port, function () {
     console.log(`Server running at http://localhost:${port}`);
 });
