@@ -1,11 +1,13 @@
-/*
-Programmer Name: Chris Wheeler
-*/
+import { selectCurrentTimestamp } from "./db.js";
 
-const fs = require("fs").promises;
-const express = require("express");
+import fs from "fs/promises";
+import express from "express";
 const app = express();
 const port = 3000;
+
+app.listen(port, function () {
+    console.log(`Server running at http://localhost:${port}`);
+});
 
 app.get("/", function (req, res) {
     fs.readFile(__dirname + "/index.html")
@@ -29,6 +31,12 @@ app.get("/ip", function (req, res) {
     res.send(`Your IP address is ${req.ip}`);
 });
 
-app.listen(port, function () {
-    console.log(`Server running at http://localhost:${port}`);
+app.get("/db", function (req, res) {
+    selectCurrentTimestamp()
+        .then(result => {
+            res.send(`Current timestamp is ${result}`);
+        })
+        .catch(err => {
+            res.send(`Error: ${err}`);
+        });
 });
