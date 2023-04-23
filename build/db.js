@@ -6,9 +6,9 @@
 // npm install mysql2
 // https://www.npmjs.com/package/mysql2
 
-
-require('dotenv').config();  // Loads env vars from `.env` to the `process.env` object.
-var mysql = require('mysql2');
+import { config } from 'dotenv';  // Loads env vars from `.env` to the `process.env` object.
+config();
+import mysql from 'mysql2/promise';
 
 var pool = mysql.createPool({
     host: process.env['DB_HOST'],
@@ -20,7 +20,7 @@ var pool = mysql.createPool({
 });
 
 
-function selectCurrentTimestamp() {
+export function selectCurrentTimestamp() {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -44,11 +44,11 @@ selectCurrentTimestamp()
         console.log(results);
     })
     .catch(function (err) {
-        console.error(err);
+        console.error(`Failed to connect to the database: ${err}`);
     });
 
 
-function insertShortUrl(originalUrl, shortUrl, userId) {
+export function insertShortUrl(originalUrl, shortUrl, userId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -74,7 +74,7 @@ function insertShortUrl(originalUrl, shortUrl, userId) {
 }
 
 
-function insertGuestShortUrl(originalUrl, shortUrl) {
+export function insertGuestShortUrl(originalUrl, shortUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -104,7 +104,7 @@ function insertGuestShortUrl(originalUrl, shortUrl) {
     The password must be 200 characters or less.
     The type must be one of 'free', 'premium', 'business', or 'admin'.
 */
-function insertAccount(email, password, type) {
+export function insertAccount(email, password, type) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -130,7 +130,7 @@ function insertAccount(email, password, type) {
 }
 
 
-function selectUrl(shortUrl) {
+export function selectUrl(shortUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -154,7 +154,7 @@ function selectUrl(shortUrl) {
 }
 
 
-function selectUrl(urlId) {
+export function selectUrlById(urlId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -178,7 +178,7 @@ function selectUrl(urlId) {
 }
 
 
-function selectUrlClicks(urlId) {
+export function selectUrlClicks(urlId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -202,7 +202,7 @@ function selectUrlClicks(urlId) {
 }
 
 
-function selectUserUrls(userId) {
+export function selectUserUrls(userId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -228,7 +228,7 @@ function selectUserUrls(userId) {
 }
 
 
-function editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+export function editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -259,7 +259,7 @@ function editAccount(userId, email, password, linkRotNotifications, linkMetricsR
 }
 
 
-function permanentlyDeleteAccount(userId) {
+export function permanentlyDeleteAccount(userId) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -282,7 +282,7 @@ function permanentlyDeleteAccount(userId) {
 }
 
 
-function editUrl(urlId, newOriginalUrl) {
+export function editUrl(urlId, newOriginalUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -307,7 +307,7 @@ function editUrl(urlId, newOriginalUrl) {
 }
 
 
-function editOriginalUrl(shortUrl, newOriginalUrl) {
+export function editOriginalUrl(shortUrl, newOriginalUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -332,7 +332,7 @@ function editOriginalUrl(shortUrl, newOriginalUrl) {
 }
 
 
-function editShortUrl(urlId, newShortUrl) {
+export function editShortUrl(urlId, newShortUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -357,7 +357,7 @@ function editShortUrl(urlId, newShortUrl) {
 }
 
 
-function deleteUrl(shortUrl) {
+export function deleteUrl(shortUrl) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
@@ -381,7 +381,7 @@ function deleteUrl(shortUrl) {
 }
 
 
-function reportUrl(urlId, userId, reason) {
+export function reportUrl(urlId, userId, reason) {
     return new Promise(function (resolve, reject) {
         pool.getConnection(function (error, connection) {
             if (error) throw error;
