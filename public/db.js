@@ -1,16 +1,13 @@
 // See the "database queries" google doc for more info.
 // https://docs.google.com/document/d/1-0uuLQKpJv4AtIP_U9n10LBu-a518Mcoea7zqqDyym8
 
-// npm install dotenv
-// https://www.npmjs.com/package/dotenv
-// npm install mysql2
-// https://www.npmjs.com/package/mysql2
+import { config } from 'dotenv';
+config();  // Loads env vars from the `.env` file into the `process.env` object.
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const mysql = require('mysql2');
 
-import { config } from 'dotenv';  // Loads env vars from `.env` to the `process.env` object.
-config();
-import mysql from 'mysql2/promise';
-
-var pool = mysql.createPool({
+const connection = mysql.createConnection({
     host: process.env['DB_HOST'],
     port: '3306',
     database: 'url_shortener',
@@ -20,38 +17,30 @@ var pool = mysql.createPool({
 });
 
 
-export function selectCurrentTimestamp() {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+export class DB {
+
+
+    constructor() {
+    }
+
+
+    selectCurrentTimestamp() {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT CURRENT_TIMESTAMP;
                 `,
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-selectCurrentTimestamp()
-    .then(function (results) {
-        console.log(results);
-    })
-    .catch(function (err) {
-        console.error(`Failed to connect to the database: ${err}`);
-    });
-
-
-export function insertShortUrl(originalUrl, shortUrl, userId) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    insertShortUrl(originalUrl, shortUrl, userId) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO urls
@@ -64,20 +53,16 @@ export function insertShortUrl(originalUrl, shortUrl, userId) {
                     userId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function insertGuestShortUrl(originalUrl, shortUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    insertGuestShortUrl(originalUrl, shortUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO urls
@@ -89,25 +74,21 @@ export function insertGuestShortUrl(originalUrl, shortUrl) {
                     shortUrl
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-/*
-    The email address must be 254 characters or less.
-    The password must be 200 characters or less.
-    The type must be one of 'free', 'premium', 'business', or 'admin'.
-*/
-export function insertAccount(email, password, type) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    /*
+        The email address must be 254 characters or less.
+        The password must be 200 characters or less.
+        The type must be one of 'free', 'premium', 'business', or 'admin'.
+    */
+    insertAccount(email, password, type) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO users
@@ -120,20 +101,16 @@ export function insertAccount(email, password, type) {
                     type
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function selectUrl(shortUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    selectUrl(shortUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
@@ -144,20 +121,16 @@ export function selectUrl(shortUrl) {
                     shortUrl
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function selectUrlById(urlId) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    selectUrlById(urlId) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
@@ -168,20 +141,16 @@ export function selectUrlById(urlId) {
                     urlId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function selectUrlClicks(urlId) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    selectUrlClicks(urlId) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT id, time, ipv4, ipv6
@@ -192,20 +161,16 @@ export function selectUrlClicks(urlId) {
                     urlId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function selectUserUrls(userId) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    selectUserUrls(userId) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT id, originalUrl, shortUrl, created
@@ -218,20 +183,16 @@ export function selectUserUrls(userId) {
                     userId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE users
@@ -249,20 +210,16 @@ export function editAccount(userId, email, password, linkRotNotifications, linkM
                     userId,
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function permanentlyDeleteAccount(userId) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    permanentlyDeleteAccount(userId) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     DELETE FROM users
@@ -272,20 +229,16 @@ export function permanentlyDeleteAccount(userId) {
                     userId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function editUrl(urlId, newOriginalUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    editUrl(urlId, newOriginalUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
@@ -297,20 +250,16 @@ export function editUrl(urlId, newOriginalUrl) {
                     urlId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function editOriginalUrl(shortUrl, newOriginalUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    editOriginalUrl(shortUrl, newOriginalUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
@@ -322,20 +271,16 @@ export function editOriginalUrl(shortUrl, newOriginalUrl) {
                     shortUrl
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function editShortUrl(urlId, newShortUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    editShortUrl(urlId, newShortUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
@@ -347,20 +292,17 @@ export function editShortUrl(urlId, newShortUrl) {
                     urlId
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function deleteUrl(shortUrl) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    /* Doesn't actually delete the url, just marks it as deleted. */
+    deleteUrl(shortUrl) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
@@ -371,20 +313,16 @@ export function deleteUrl(shortUrl) {
                     shortUrl,
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
-}
+    }
 
 
-export function reportUrl(urlId, userId, reason) {
-    return new Promise(function (resolve, reject) {
-        pool.getConnection(function (error, connection) {
-            if (error) throw error;
+    reportUrl(urlId, userId, reason) {
+        return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO userReports
@@ -397,11 +335,10 @@ export function reportUrl(urlId, userId, reason) {
                     reason
                 ],
                 function (err, results, fields) {
-                    connection.release();
                     if (err) reject(err);
                     resolve(results);
                 }
             );
         });
-    });
+    }
 }
