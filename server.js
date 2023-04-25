@@ -1,16 +1,17 @@
-import { selectCurrentTimestamp } from "./db.js";
+import { selectCurrentTimestamp } from "./public/db.js";
 
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-import fs from "fs/promises";
 import express from "express";
 const app = express();
+app.set('trust proxy', true);  // required for req.ip to work properly if using a proxy
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const path = require('path');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.use('/public', express.static(path.join(__dirname, "public")));
 
 // The port must be the same as the one being used for MySQL.
 app.listen(3306, function () {
@@ -18,17 +19,17 @@ app.listen(3306, function () {
 });
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname + "/index.html"));
-        // .then(contents => {
-        //     res.setHeader("Content-Type", "text/html");
-        //     res.writeHead(200);
-        //     res.end(contents);
-        // })
-        // .catch(err => {
-        //     res.writeHead(500);
-        //     res.end(err);
-        //     return;
-        // });
+    res.sendFile(path.join(__dirname + "/public/index.html"));
+    // .then(contents => {
+    //     res.setHeader("Content-Type", "text/html");
+    //     res.writeHead(200);
+    //     res.end(contents);
+    // })
+    // .catch(err => {
+    //     res.writeHead(500);
+    //     res.end(err);
+    //     return;
+    // });
 });
 
 app.get("/hello", function (req, res) {
