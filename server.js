@@ -6,7 +6,7 @@ app.set('trust proxy', true);  // required for req.ip to work properly if using 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const path = require('path');
-import { DB } from './public/db.js';
+import { DB } from './db.js';
 const db = new DB();
 console.log(await db.selectCurrentTimestamp());
 
