@@ -191,6 +191,26 @@ export class DB {
     }
 
 
+    selectAccount(email) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, email, password, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    FROM users
+                    WHERE email = ?;
+                `,
+                [
+                    email
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
     editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
         return new Promise(function (resolve, reject) {
             connection.query(
