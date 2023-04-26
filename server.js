@@ -14,6 +14,7 @@ console.log(await db.selectCurrentTimestamp());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, "public")));
 
 // The port must be the same as the one being used for MySQL.
