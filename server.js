@@ -1,3 +1,5 @@
+import { config } from 'dotenv';
+config();  // Loads env vars from the `.env` file into the `process.env` object.
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 import express from "express";
@@ -15,8 +17,9 @@ const __dirname = dirname(__filename);
 app.use('/public', express.static(path.join(__dirname, "public")));
 
 // The port must be the same as the one being used for MySQL.
-app.listen(3306, function () {
-    console.log("Server running at http://localhost:3306");
+const port = process.env['DB_PORT'];
+app.listen(port, function () {
+    console.log(`Server running at http://localhost:${port}`);
 });
 
 app.get("/", function (req, res) {

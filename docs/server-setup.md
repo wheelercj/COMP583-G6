@@ -13,14 +13,13 @@
     * [How to use Nginx as a reverse proxy for a Node.js server](https://blog.logrocket.com/how-to-run-a-node-js-server-with-nginx/)
 8. `cd ~`
 9. Clone the repo with `git clone https://github.com/wheelercj/COMP583-G6.git`.
-10. `npm init -y`
-11. `npm install`
-12. `vim .env`
-13. Copy the contents of the local .env file to the new remote one.
-14. Change the port Nginx directs requests to from 3000 to 3306
-15. `sudo service nginx restart`
-16. `sudo nginx -t` (not `nginx -t` since root permissions are needed) to test the configuration
-17. [How To Deploy Node.js Applications Using Systemd and Nginx](https://www.digitalocean.com/community/tutorials/how-to-deploy-node-js-applications-using-systemd-and-nginx)
+10. `npm install`
+11. `vim .env`
+12. Copy the contents of the local .env file to the new remote one.
+13. Change the port Nginx directs requests to from 3000 to 3306
+14. `sudo service nginx restart`
+15. `sudo nginx -t` (not `nginx -t` since root permissions are needed) to test the configuration
+16. [How To Deploy Node.js Applications Using Systemd and Nginx](https://www.digitalocean.com/community/tutorials/how-to-deploy-node-js-applications-using-systemd-and-nginx)
     * I named the service `/etc/systemd/system/url-shortener.service`
     * I used my own linux user and group instead of creating a new one for the service
     * the `[Service]` section of the `url-shortener.service` file requires `EnvironmentFile=` followed by the path to the `.env`
