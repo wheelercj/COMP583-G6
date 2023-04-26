@@ -27,11 +27,11 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
-app.get("/ip", function (req, res) {
-    res.send(`Your IP address is ${req.ip}`);
+app.get("/v1/ip", function (req, res) {
+    res.send(req.ip);
 });
 
-app.get("/timestamp", async function (req, res) {
+app.get("/v1/timestamp", async function (req, res) {
     const result = await db.selectCurrentTimestamp();
-    res.send(`The current time is ${result[0]['CURRENT_TIMESTAMP']}`);
+    res.send(result[0]['CURRENT_TIMESTAMP']);
 });
