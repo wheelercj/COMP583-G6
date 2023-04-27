@@ -35,3 +35,12 @@ app.get("/v1/timestamp", async function (req, res) {
     const result = await db.selectCurrentTimestamp();
     res.send(result[0]['CURRENT_TIMESTAMP']);
 });
+
+app.get("/:shortUrl", async function (req, res) {
+    let result = await db.selectUrl(req.params.shortUrl);
+    if (result.length > 0) {
+        res.json(result[0]);
+    } else {
+        res.status(404).send("Short URL not found.");
+    }
+});
