@@ -32,7 +32,7 @@ app.get("/v1/ip", function (req, res) {
 
 app.get("/v1/timestamp", async function (req, res) {
     const result = await db.selectCurrentTimestamp();
-    res.send(result[0]['CURRENT_TIMESTAMP']);
+    res.json(result[0]['CURRENT_TIMESTAMP']);
 });
 
 app.get("/:shortUrl", async function (req, res) {
@@ -40,7 +40,7 @@ app.get("/:shortUrl", async function (req, res) {
     if (result.length > 0) {
         res.redirect(result[0].originalUrl);
     } else {
-        res.status(404).send("Short URL not found.");
+        res.status(404).send();
     }
 });
 
@@ -49,6 +49,6 @@ app.get("/v1/url/:shortUrl", async function (req, res) {
     if (result.length > 0) {
         res.json(result[0]);
     } else {
-        res.status(404).send("Short URL not found.");
+        res.status(404).send();
     }
 });
