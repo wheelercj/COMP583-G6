@@ -3,9 +3,7 @@
 
 import { config } from 'dotenv';
 config();  // Loads env vars from the `.env` file into the `process.env` object.
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 const connection = mysql.createConnection({
     host: process.env['DB_HOST'],
@@ -39,47 +37,9 @@ export class DB {
     }
 
 
-    insertShortUrl(originalUrl, shortUrl, userId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    INSERT INTO urls
-                    (originalUrl, shortUrl, userId)
-                    VALUES (?, ?, ?);
-                `,
-                [
-                    originalUrl,
-                    shortUrl,
-                    userId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    insertGuestShortUrl(originalUrl, shortUrl) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    INSERT INTO urls
-                    (originalUrl, shortUrl)
-                    VALUES (?, ?);
-                `,
-                [
-                    originalUrl,
-                    shortUrl
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
+    /**************
+        accounts
+    ***************/
 
 
     /*
@@ -99,6 +59,99 @@ export class DB {
                     email,
                     password,
                     type
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectAccount(email) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, email, password, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    FROM users
+                    WHERE email = ?;
+                `,
+                [
+                    email
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE users
+                    SET email = ?,
+                        password = ?,
+                        linkRotNotifications = ?,
+                        linkMetricsReports = ?
+                    WHERE id = ?;
+                `,
+                [
+                    email,
+                    password,
+                    linkRotNotifications,
+                    linkMetricsReports,
+                    userId,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    permanentlyDeleteAccount(userId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    DELETE FROM users
+                    WHERE id = ?;
+                `,
+                [
+                    userId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    /**********
+        URLs
+    ***********/
+
+
+    insertUrl(originalUrl, shortUrl, userId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    INSERT INTO urls
+                    (originalUrl, shortUrl, userId)
+                    VALUES (?, ?, ?);
+                `,
+                [
+                    originalUrl,
+                    shortUrl,
+                    userId
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
@@ -149,26 +202,6 @@ export class DB {
     }
 
 
-    selectUrlClicks(urlId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, time, ipv4, ipv6
-                    FROM clicks
-                    WHERE urlId = ?;
-                `,
-                [
-                    urlId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
     selectUserUrls(userId) {
         return new Promise(function (resolve, reject) {
             connection.query(
@@ -191,82 +224,16 @@ export class DB {
     }
 
 
-    selectAccount(email) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, email, password, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
-                    FROM users
-                    WHERE email = ?;
-                `,
-                [
-                    email
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    UPDATE users
-                    SET email = ?,
-                        password = ?,
-                        linkRotNotifications = ?,
-                        linkMetricsReports = ?
-                    WHERE id = ?;
-                `,
-                [
-                    email,
-                    password,
-                    linkRotNotifications,
-                    linkMetricsReports,
-                    userId,
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    permanentlyDeleteAccount(userId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    DELETE FROM users
-                    WHERE id = ?;
-                `,
-                [
-                    userId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    editUrl(urlId, newOriginalUrl) {
+    updateShortUrl(urlId, newShortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
-                    SET originalUrl = ?
-                    WHERE id = ?;
+                    SET shortUrl = ?
+                    WHERE urlId = ?;
                 `,
                 [
-                    newOriginalUrl,
+                    newShortUrl,
                     urlId
                 ],
                 function (err, results, fields) {
@@ -278,7 +245,7 @@ export class DB {
     }
 
 
-    editOriginalUrl(shortUrl, newOriginalUrl) {
+    updateOriginalUrl(shortUrl, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -299,16 +266,16 @@ export class DB {
     }
 
 
-    editShortUrl(urlId, newShortUrl) {
+    updateOriginalUrlById(urlId, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
-                    SET shortUrl = ?
-                    WHERE urlId = ?;
+                    SET originalUrl = ?
+                    WHERE id = ?;
                 `,
                 [
-                    newShortUrl,
+                    newOriginalUrl,
                     urlId
                 ],
                 function (err, results, fields) {
@@ -341,7 +308,86 @@ export class DB {
     }
 
 
-    reportUrl(urlId, userId, reason) {
+    /*************
+        clicks
+    **************/
+
+
+    insertClick(urlId, ip) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    INSERT INTO clicks
+                    (urlId, ip)
+                    VALUES (?, ?);
+                `,
+                [
+                    urlId,
+                    ip,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectClicks(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, created, ip, urlId
+                    FROM clicks
+                    WHERE urlId = ?;
+                `,
+                [
+                    urlId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    /*
+        The `days` variable is the number of previous days (starting from
+        today) to return metrics for.
+    */
+    selectMetrics(urlId, days) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT DATE(created) AS date, COUNT(*) AS clicks
+                    FROM clicks
+                    WHERE urlId = ?
+                        AND created >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)
+                    GROUP BY DATE(created)
+                    ORDER BY DATE(created) DESC;
+                `,
+                [
+                    urlId,
+                    days,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    /**************
+        reports
+    ***************/
+
+
+    insertReport(urlId, userId, reason) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -353,6 +399,62 @@ export class DB {
                     urlId,
                     userId,
                     reason
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectReports() {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, created, viewed, reason, userId, urlId
+                    FROM userReports;
+                `,
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateReport(reportId, viewed) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE userReports
+                    SET viewed = ?
+                    WHERE id = ?;
+                `,
+                [
+                    viewed,
+                    reportId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    permanentlyDeleteReport(reportId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    DELETE FROM userReports
+                    WHERE id = ?;
+                `,
+                [
+                    reportId
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
