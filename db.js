@@ -339,7 +339,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, time, ipv4, ipv6
+                    SELECT id, created, ipv4, ipv6
                     FROM clicks
                     WHERE urlId = ?;
                 `,
@@ -363,12 +363,12 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT DATE(time) AS date, COUNT(*) AS clicks
+                    SELECT DATE(created) AS date, COUNT(*) AS clicks
                     FROM clicks
                     WHERE urlId = ?
-                        AND time >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)
-                    GROUP BY DATE(time)
-                    ORDER BY DATE(time) DESC;
+                        AND created >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)
+                    GROUP BY DATE(created)
+                    ORDER BY DATE(created) DESC;
                 `,
                 [
                     urlId,
@@ -414,7 +414,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, time, viewed, reason, userId, urlId
+                    SELECT id, created, viewed, reason, userId, urlId
                     FROM userReports;
                 `,
                 function (err, results, fields) {

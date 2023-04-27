@@ -35,7 +35,7 @@ CREATE TABLE urls (
 
 CREATE TABLE clicks (
     id SERIAL,
-    time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     ipv4 INT UNSIGNED,
     ipv6 BINARY(16),
     urlId BIGINT UNSIGNED NOT NULL,
@@ -44,21 +44,21 @@ CREATE TABLE clicks (
 
 CREATE TABLE blockedShortUrls (
     id SERIAL,
-    time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     shortUrl VARCHAR(30) NOT NULL UNIQUE,
     reason VARCHAR(500)
 );
 
 CREATE TABLE blockedOriginalUrls (
     id SERIAL,
-    time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     originalUrl VARCHAR(1000) NOT NULL,  -- Ideally, these should be unique but MySQL doesnt allow such a large varchar to be unique.
     reason VARCHAR(500)
 );
 
 CREATE TABLE userReports (
     id SERIAL,
-    time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     viewed ENUM('true', 'false') NOT NULL DEFAULT 'false',
     reason VARCHAR(500) NOT NULL,
     userId BIGINT UNSIGNED NOT NULL,
