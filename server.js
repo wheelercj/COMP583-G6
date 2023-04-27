@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import * as path from 'path';
 import { DB } from './db.js';
+import { createRandomShortUrl, createCustomShortUrl } from './shorten-url.js';
 
 const app = express();
 const db = new DB();
@@ -51,5 +52,31 @@ app.get("/v1/url/:shortUrl", async function (req, res) {
         res.json(result[0]);
     } else {
         res.status(404).send();
+    }
+});
+
+app.post("/v1/url", async function (req, res) {
+    const originalUrl = req.body.url;
+    const userId = req.body.userId;
+    let shortUrl = req.body.custom;
+
+    if (originalUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+
+    if (shortUrl) {
+        if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        shortUrl = await createRandomShortUrl(originalUrl, userId);
+        if (shortUrl) {
+            res.json(shortUrl);
+        } else {
+            res.status(400).send();
+        }
     }
 });
