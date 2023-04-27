@@ -313,6 +313,28 @@ export class DB {
     **************/
 
 
+    insertClick(urlId, ipv4, ipv6) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    INSERT INTO clicks
+                    (urlId, ipv4, ipv6)
+                    VALUES (?, ?, ?);
+                `,
+                [
+                    urlId,
+                    ipv4,
+                    ipv6
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
     selectClicks(urlId) {
         return new Promise(function (resolve, reject) {
             connection.query(
@@ -378,6 +400,62 @@ export class DB {
                     urlId,
                     userId,
                     reason
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectReports() {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, time, viewed, reason, userId, urlId
+                    FROM userReports;
+                `,
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateReport(reportId, viewed) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE userReports
+                    SET viewed = ?
+                    WHERE id = ?;
+                `,
+                [
+                    viewed,
+                    reportId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    permanentlyDeleteReport(reportId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    DELETE FROM userReports
+                    WHERE id = ?;
+                `,
+                [
+                    reportId
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
