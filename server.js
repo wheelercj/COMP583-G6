@@ -26,15 +26,6 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
-app.get("/v1/ip", function (req, res) {
-    res.json(req.ip);
-});
-
-app.get("/v1/timestamp", async function (req, res) {
-    const result = await db.selectCurrentTimestamp();
-    res.json(result[0]['CURRENT_TIMESTAMP']);
-});
-
 app.get("/:shortUrl", async function (req, res) {
     let results = await db.selectUrl(req.params.shortUrl);
     if (results.length > 0) {
@@ -43,6 +34,15 @@ app.get("/:shortUrl", async function (req, res) {
     } else {
         res.status(404).send();
     }
+});
+
+app.get("/v1/ip", function (req, res) {
+    res.json(req.ip);
+});
+
+app.get("/v1/timestamp", async function (req, res) {
+    const result = await db.selectCurrentTimestamp();
+    res.json(result[0]['CURRENT_TIMESTAMP']);
 });
 
 app.get("/v1/url/:shortUrl", async function (req, res) {
