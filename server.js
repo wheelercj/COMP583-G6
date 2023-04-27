@@ -36,9 +36,10 @@ app.get("/v1/timestamp", async function (req, res) {
 });
 
 app.get("/:shortUrl", async function (req, res) {
-    let result = await db.selectUrl(req.params.shortUrl);
-    if (result.length > 0) {
-        res.redirect(result[0].originalUrl);
+    let results = await db.selectUrl(req.params.shortUrl);
+    if (results.length > 0) {
+        await db.insertClick(results[0].id, req.ip);
+        res.redirect(results[0].originalUrl);
     } else {
         res.status(404).send();
     }

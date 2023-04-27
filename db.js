@@ -313,18 +313,17 @@ export class DB {
     **************/
 
 
-    insertClick(urlId, ipv4, ipv6) {
+    insertClick(urlId, ip) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO clicks
-                    (urlId, ipv4, ipv6)
-                    VALUES (?, ?, ?);
+                    (urlId, ip)
+                    VALUES (?, ?);
                 `,
                 [
                     urlId,
-                    ipv4,
-                    ipv6
+                    ip,
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
@@ -339,7 +338,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, created, ipv4, ipv6
+                    SELECT id, created, ip, urlId
                     FROM clicks
                     WHERE urlId = ?;
                 `,
