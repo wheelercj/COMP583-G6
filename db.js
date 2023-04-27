@@ -37,7 +37,7 @@ export class DB {
     }
 
 
-    insertShortUrl(originalUrl, shortUrl, userId) {
+    insertUrl(originalUrl, shortUrl, userId) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -59,7 +59,7 @@ export class DB {
     }
 
 
-    insertGuestShortUrl(originalUrl, shortUrl) {
+    insertGuestUrl(originalUrl, shortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -209,7 +209,7 @@ export class DB {
     }
 
 
-    editAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+    updateAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -255,7 +255,7 @@ export class DB {
     }
 
 
-    editUrl(urlId, newOriginalUrl) {
+    updateUrl(urlId, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -276,7 +276,7 @@ export class DB {
     }
 
 
-    editOriginalUrl(shortUrl, newOriginalUrl) {
+    updateOriginalUrl(shortUrl, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -297,7 +297,7 @@ export class DB {
     }
 
 
-    editShortUrl(urlId, newShortUrl) {
+    updateShortUrl(urlId, newShortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
