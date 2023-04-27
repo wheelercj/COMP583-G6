@@ -3,9 +3,7 @@
 
 import { config } from 'dotenv';
 config();  // Loads env vars from the `.env` file into the `process.env` object.
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 const connection = mysql.createConnection({
     host: process.env['DB_HOST'],
