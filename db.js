@@ -37,47 +37,9 @@ export class DB {
     }
 
 
-    insertUrl(originalUrl, shortUrl, userId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    INSERT INTO urls
-                    (originalUrl, shortUrl, userId)
-                    VALUES (?, ?, ?);
-                `,
-                [
-                    originalUrl,
-                    shortUrl,
-                    userId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    insertGuestUrl(originalUrl, shortUrl) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    INSERT INTO urls
-                    (originalUrl, shortUrl)
-                    VALUES (?, ?);
-                `,
-                [
-                    originalUrl,
-                    shortUrl
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
+    /**************
+        accounts
+    ***************/
 
 
     /*
@@ -97,88 +59,6 @@ export class DB {
                     email,
                     password,
                     type
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    selectUrl(shortUrl) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
-                    FROM urls
-                    WHERE shortUrl = ?;
-                `,
-                [
-                    shortUrl
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    selectUrlById(urlId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
-                    FROM urls
-                    WHERE id = ?;
-                `,
-                [
-                    urlId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    selectUrlClicks(urlId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, time, ipv4, ipv6
-                    FROM clicks
-                    WHERE urlId = ?;
-                `,
-                [
-                    urlId
-                ],
-                function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                }
-            );
-        });
-    }
-
-
-    selectUserUrls(userId) {
-        return new Promise(function (resolve, reject) {
-            connection.query(
-                `
-                    SELECT id, originalUrl, shortUrl, created
-                    FROM urls
-                    WHERE userId = ?
-                        AND deleted IS NULL
-                        AND disabled IS NULL;
-                `,
-                [
-                    userId
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
@@ -255,16 +135,105 @@ export class DB {
     }
 
 
-    updateUrl(urlId, newOriginalUrl) {
+    /**********
+        URLs
+    ***********/
+
+
+    insertUrl(originalUrl, shortUrl, userId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    INSERT INTO urls
+                    (originalUrl, shortUrl, userId)
+                    VALUES (?, ?, ?);
+                `,
+                [
+                    originalUrl,
+                    shortUrl,
+                    userId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectUrl(shortUrl) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
+                    FROM urls
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    shortUrl
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectUrlById(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
+                    FROM urls
+                    WHERE id = ?;
+                `,
+                [
+                    urlId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectUserUrls(userId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, originalUrl, shortUrl, created
+                    FROM urls
+                    WHERE userId = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
+                `,
+                [
+                    userId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateShortUrl(urlId, newShortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
-                    SET originalUrl = ?
-                    WHERE id = ?;
+                    SET shortUrl = ?
+                    WHERE urlId = ?;
                 `,
                 [
-                    newOriginalUrl,
+                    newShortUrl,
                     urlId
                 ],
                 function (err, results, fields) {
@@ -297,16 +266,16 @@ export class DB {
     }
 
 
-    updateShortUrl(urlId, newShortUrl) {
+    updateOriginalUrlById(urlId, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
-                    SET shortUrl = ?
-                    WHERE urlId = ?;
+                    SET originalUrl = ?
+                    WHERE id = ?;
                 `,
                 [
-                    newShortUrl,
+                    newOriginalUrl,
                     urlId
                 ],
                 function (err, results, fields) {
@@ -339,7 +308,65 @@ export class DB {
     }
 
 
-    reportUrl(urlId, userId, reason) {
+    /*************
+        clicks
+    **************/
+
+
+    selectClicks(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, time, ipv4, ipv6
+                    FROM clicks
+                    WHERE urlId = ?;
+                `,
+                [
+                    urlId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    /*
+        The `days` variable is the number of previous days (starting from
+        today) to return metrics for.
+    */
+    selectMetrics(urlId, days) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT DATE(time) AS date, COUNT(*) AS clicks
+                    FROM clicks
+                    WHERE urlId = ?
+                        AND time >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)
+                    GROUP BY DATE(time)
+                    ORDER BY DATE(time) DESC;
+                `,
+                [
+                    urlId,
+                    days,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    /**************
+        reports
+    ***************/
+
+
+    insertReport(urlId, userId, reason) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
