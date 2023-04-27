@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, "public")));
 
-// The port must be the same as the one being used for MySQL.
+// The Express port must be the same as the one being used for MySQL.
 const port = process.env['DB_PORT'];
 app.listen(port, function () {
     console.log(`Server running at http://localhost:${port}`);
@@ -28,7 +28,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/v1/ip", function (req, res) {
-    res.send(req.ip);
+    res.json(req.ip);
 });
 
 app.get("/v1/timestamp", async function (req, res) {
@@ -39,7 +39,7 @@ app.get("/v1/timestamp", async function (req, res) {
 app.get("/:shortUrl", async function (req, res) {
     let result = await db.selectUrl(req.params.shortUrl);
     if (result.length > 0) {
-        res.json(result[0].originalUrl);
+        res.redirect(result[0].originalUrl);
     } else {
         res.status(404).send("Short URL not found.");
     }
