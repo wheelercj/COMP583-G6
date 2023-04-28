@@ -82,11 +82,13 @@ app.post("/v1/url", async function (req, res) {
     }
 });
 
-app.get("/v1/graph", async function (req, res) {
-    const result = await createGraph(req.body.urlId, 7);
-    if (result) {
-        res.set({'Content-Type': 'image/png'});
-        res.send(result);
+app.get("/v1/metrics", async function (req, res) {
+    const urlId = req.body.urlId;
+    const dayCount = req.body.days;
+    const graph = await createGraph(urlId, dayCount);
+    if (graph) {
+        const base64Graph = '<img src="data:image/png;base64,' + Buffer.from(graph).toString('base64') + '" />';
+        res.json({ graph: base64Graph });
     } else {
         res.status(400).send();
     }
