@@ -47,3 +47,13 @@ another example request body:
 ```
 
 When a custom link to redirect from is given, there is no JSON response.
+
+## `GET <baseUrl>/v1/graph` expects a JSON object and returns an image
+
+example request body:
+
+```json
+{
+    "urlId": 2
+}
+```

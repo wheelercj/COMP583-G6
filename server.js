@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import * as path from 'path';
 import { DB } from './db.js';
 import { createRandomShortUrl, createCustomShortUrl } from './shorten-url.js';
+import { createGraph } from './metrics.js';
 
 const app = express();
 const db = new DB();
@@ -78,5 +79,15 @@ app.post("/v1/url", async function (req, res) {
         } else {
             res.status(400).send();
         }
+    }
+});
+
+app.get("/v1/graph", async function (req, res) {
+    const result = await createGraph(req.body.urlId, 7);
+    if (result) {
+        res.set({'Content-Type': 'image/png'});
+        res.send(result);
+    } else {
+        res.status(400).send();
     }
 });
