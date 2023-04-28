@@ -1,6 +1,8 @@
 # web API routes
 
-## `GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
+## get a link's data
+
+`GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
 
 `<shortUrl>` is not an entire URL, just the end part after the site's base URL.
 
@@ -19,7 +21,9 @@ example response:
 }
 ```
 
-## `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
+## create a new short link (either random or custom)
+
+`POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
 example request body:
 
@@ -48,7 +52,9 @@ another example request body:
 
 When a custom link to redirect from is given, there is no JSON response.
 
-## `GET <baseUrl>/v1/metrics` expects and returns JSON objects
+## get metrics about a link
+
+`GET <baseUrl>/v1/metrics` expects and returns JSON objects
 
 example request body:
 
