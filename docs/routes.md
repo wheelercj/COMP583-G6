@@ -55,7 +55,7 @@ example request body:
 ```json
 {
     "urlId": 2,
-    "days": 7
+    "maxDays": 7
 }
 ```
 

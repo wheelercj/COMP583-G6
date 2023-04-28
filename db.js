@@ -355,10 +355,10 @@ export class DB {
 
 
     /*
-        The `days` variable is the number of previous days (starting from
+        The `maxDays` variable is the number of previous maxDays (starting from
         today) to return metrics for.
     */
-    selectMetrics(urlId, days) {
+    selectMetrics(urlId, maxDays) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -371,7 +371,7 @@ export class DB {
                 `,
                 [
                     urlId,
-                    days,
+                    maxDays,
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);

@@ -8,8 +8,8 @@ const db = new DB();
 /*
     Returns an image if successful, otherwise returns null.
 */
-export async function createGraph(urlId, dayCount) {
-    const metrics = await fetchMetrics(urlId, dayCount);
+export async function createGraph(urlId, maxDays) {
+    const metrics = await fetchMetrics(urlId, maxDays);
     if (!metrics) {
         return null;
     }
@@ -42,12 +42,12 @@ export async function createGraph(urlId, dayCount) {
 
 
 /*
-    Gets the clickthrough rates of the last dayCount days (including today) of a url
-    from the database. Returns an object with attributes `clickCounts` and `days` (each
-    an array) if successful, otherwise returns null.
+    Gets the clickthrough rates of the last maxDays days (including today) of a url from
+    the database. Returns an object with attributes `clickCounts` and `days` (each an
+    array) if successful, otherwise returns null.
 */
-async function fetchMetrics(urlId, dayCount) {
-    const results = await db.selectMetrics(urlId, dayCount);
+async function fetchMetrics(urlId, maxDays) {
+    const results = await db.selectMetrics(urlId, maxDays);
     let clickCounts = [];
     let days = [];
     for (let i = 0; i < results.length; i++) {

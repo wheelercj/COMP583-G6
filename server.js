@@ -84,8 +84,8 @@ app.post("/v1/url", async function (req, res) {
 
 app.get("/v1/metrics", async function (req, res) {
     const urlId = req.body.urlId;
-    const dayCount = req.body.days;
-    const graph = await createGraph(urlId, dayCount);
+    const maxDays = req.body.maxDays;
+    const graph = await createGraph(urlId, maxDays);
     if (graph) {
         const base64Graph = '<img src="data:image/png;base64,' + Buffer.from(graph).toString('base64') + '" />';
         res.json({ graph: base64Graph });
