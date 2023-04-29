@@ -206,11 +206,9 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
                     FROM urls
-                    WHERE userId = ?
-                        AND deleted IS NULL
-                        AND disabled IS NULL;
+                    WHERE userId = ?;
                 `,
                 [
                     userId

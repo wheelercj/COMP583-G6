@@ -82,6 +82,15 @@ app.post("/v1/url", async function (req, res) {
     }
 });
 
+app.get("/v1/urls/:userId", async function (req, res) {
+    const results = await db.selectUserUrls(req.params.userId);
+    if (results.length === 0) {
+        res.status(404).send();
+    } else {
+        res.json(results);
+    }
+});
+
 /*
     If both urlId and shortUrl are given, uses urlId. Requires at least one of them.
 */
