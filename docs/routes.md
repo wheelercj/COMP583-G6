@@ -1,8 +1,10 @@
 # web API routes
 
-## `GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
+## get a link's data
 
-`<shortUrl>` is not an entire URL, just the end part after the site's base URL.
+`GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
+
+`<shortUrl>` is not an entire URL, just the unique part after the site's base URL.
 
 example response:
 
@@ -19,7 +21,9 @@ example response:
 }
 ```
 
-## `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
+## create a new short link (either random or custom)
+
+`POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
 example request body:
 
@@ -47,3 +51,38 @@ another example request body:
 ```
 
 When a custom link to redirect from is given, there is no JSON response.
+
+## get a link's metrics
+
+`GET <baseUrl>/v1/metrics` expects and returns JSON objects
+
+example request body:
+
+```json
+{
+    "urlId": 2,  // alternatively, you can use the "shortUrl" attribute
+    "maxDays": 7
+}
+```
+
+example response:
+
+```json
+{
+    "graph": "<img src=\"data:image/png;base64,iVBORw0KGgoAA . . . rkJggg==\" />",
+    "locations": [
+        {
+            "region": "California",
+            "country": "United States",
+            "percent": 0.8846153846153846
+        },
+        {
+            "region": "South Carolina",
+            "country": "United States",
+            "percent": 0.11538461538461539
+        }
+    ],
+    "clicks": 13,
+    "uniqueVisitors": 6
+}
+```
