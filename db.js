@@ -285,21 +285,60 @@ export class DB {
     }
 
 
-    /* Doesn't actually delete the url, just marks it as deleted. */
+    /*
+        Doesn't actually delete the url, just marks it as deleted. Resolves to false if
+        a matching link was not found.
+    */
     deleteUrl(shortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET deleted = NOW()
-                    WHERE shortUrl = ?;
+                    WHERE shortUrl = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     shortUrl,
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results.affectedRows == 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+    }
+
+
+    /*
+        Doesn't actually delete the url, just marks it as deleted. Resolves to false if
+        a matching link was not found.
+    */
+    deleteUrlById(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE urls
+                    SET deleted = NOW()
+                    WHERE id = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
+                `,
+                [
+                    urlId,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    if (results.affectedRows == 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });

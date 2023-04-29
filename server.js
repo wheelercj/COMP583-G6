@@ -92,7 +92,7 @@ app.get("/v1/urls/:userId", async function (req, res) {
 });
 
 /*
-    If both urlId and shortUrl are given, uses urlId. Requires at least one of them.
+    Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.get("/v1/metrics", async function (req, res) {
     const urlId = req.body.urlId;
@@ -115,6 +115,30 @@ app.get("/v1/metrics", async function (req, res) {
             clicks: metrics.clicks.dailyTotalCounts.reduce((a, b) => a + b, 0),
             uniqueVisitors: metrics.clicks.uniqueCount,
         });
+    } else {
+        res.status(400).send();
+    }
+});
+
+/*
+    Requires either urlId or shortUrl. If both are given, uses urlId.
+*/
+app.delete("/v1/url", async function (req, res) {
+    const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
+
+    if (urlId !== undefined) {
+        if (await db.deleteUrlById(urlId)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (shortUrl !== undefined) {
+        if (await db.deleteUrl(shortUrl)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
     } else {
         res.status(400).send();
     }

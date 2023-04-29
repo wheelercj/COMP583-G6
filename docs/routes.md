@@ -119,3 +119,15 @@ example response:
     "uniqueVisitors": 6
 }
 ```
+
+## delete a link
+
+`DELETE <baseUrl>/v1/url` expects a JSON object
+
+example request body:
+
+```json
+{
+    "urlId": 9  // alternatively, you can use the "shortUrl" attribute
+}
+```
