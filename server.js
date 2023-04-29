@@ -6,7 +6,7 @@ import { dirname } from 'path';
 import * as path from 'path';
 import { DB } from './db.js';
 import { createRandomShortUrl, createCustomShortUrl } from './shorten-url.js';
-import { createGraph } from './metrics.js';
+import { fetchMetrics, createGraph } from './metrics.js';
 
 const app = express();
 const db = new DB();
@@ -82,13 +82,30 @@ app.post("/v1/url", async function (req, res) {
     }
 });
 
+/*
+    If both urlId and shortUrl are given, uses urlId. Requires at least one of them.
+*/
 app.get("/v1/metrics", async function (req, res) {
     const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
     const maxDays = req.body.maxDays;
-    const graph = await createGraph(urlId, maxDays);
+    if (urlId === undefined && shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+
+    const metrics = await fetchMetrics(urlId, shortUrl, maxDays);
+    if (!metrics) {
+        res.status(400).send();
+    }
+    const graph = await createGraph(metrics.clicks.dailyTotalCounts, metrics.clicks.dayNames);
     if (graph) {
-        const base64Graph = '<img src="data:image/png;base64,' + Buffer.from(graph).toString('base64') + '" />';
-        res.json({ graph: base64Graph });
+        res.json({
+            graph: '<img src="data:image/png;base64,' + Buffer.from(graph).toString('base64') + '" />',
+            locations: metrics.locations,
+            clicks: metrics.clicks.dailyTotalCounts.reduce((a, b) => a + b, 0),
+            uniqueVisitors: metrics.clicks.uniqueCount,
+        });
     } else {
         res.status(400).send();
     }

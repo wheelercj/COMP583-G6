@@ -334,16 +334,22 @@ export class DB {
     }
 
 
-    selectClicks(urlId) {
+    /*
+        `maxDays` is the maximum number of previous days (starting from today) to return
+        clicks for.
+    */
+    selectClicks(urlId, maxDays) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     SELECT id, created, ip, urlId
                     FROM clicks
-                    WHERE urlId = ?;
+                    WHERE urlId = ?
+                        AND created >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
                 `,
                 [
-                    urlId
+                    urlId,
+                    maxDays,
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
@@ -355,22 +361,24 @@ export class DB {
 
 
     /*
-        The `maxDays` variable is the number of previous maxDays (starting from
-        today) to return metrics for.
+        `maxDays` is the maximum number of previous days (starting from today) to return
+        clicks for.
     */
-    selectMetrics(urlId, maxDays) {
+    selectClicksByShortUrl(shortUrl, maxDays) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT DATE(created) AS date, COUNT(*) AS clicks
+                    SELECT id, created, ip, urlId
                     FROM clicks
-                    WHERE urlId = ?
-                        AND created >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL ? DAY)
-                    GROUP BY DATE(created)
-                    ORDER BY DATE(created) DESC;
+                    WHERE urlId = (
+                        SELECT id
+                        FROM urls
+                        WHERE shortUrl = ?
+                    )
+                        AND created >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
                 `,
                 [
-                    urlId,
+                    shortUrl,
                     maxDays,
                 ],
                 function (err, results, fields) {
