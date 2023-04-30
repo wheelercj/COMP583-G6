@@ -42,14 +42,6 @@ app.get("/:shortUrl", async function (req, res) {
     }
 });
 
-app.get("/v1/ip", function (req, res) {
-    res.json(req.ip);
-});
-
-app.get("/v1/timestamp", async function (req, res) {
-    const result = await db.selectCurrentTimestamp();
-    res.json(result[0]['CURRENT_TIMESTAMP']);
-});
 
 app.get("/v1/url/:shortUrl", async function (req, res) {
     if (req.params.shortUrl === undefined) {
