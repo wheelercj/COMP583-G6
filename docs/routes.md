@@ -187,7 +187,7 @@ Email addresses can be up to 254 characters long and passwords can be between 8 
 
 ### get an account's data
 
-`GET <baseUrl>/v1/account` returns a JSON object
+`GET <baseUrl>/v1/account` expects and returns JSON objects
 
 sample request body:
 
@@ -211,3 +211,24 @@ sample response:
     "linkMetricsReports": "true"
 }
 ```
+
+### edit an account (except the password)
+
+`PUT <baseUrl>/v1/account` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4,  // alternatively, you can use the "email" attribute
+
+    "newEmail": "sandwich@shop.com",
+    "newType": "free",
+    "newLinkRotNotifications": "true",
+    "newLinkMetricsReports": "true"
+}
+```
+
+The "newEmail", "newType", "newLinkRotNotifications", and "newLinkMetricsReports" attributes are required. For any of these that should not change, give the current value.
+
+Email addresses can be up to 254 characters long.

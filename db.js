@@ -109,22 +109,70 @@ export class DB {
     }
 
 
-    updateAccount(userId, email, hashedPassword, linkRotNotifications, linkMetricsReports) {
+    updateAccount(currentEmail, newEmail, newType, newLinkRotNotifications, newLinkMetricsReports) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE users
                     SET email = ?,
-                        hashedPassword = ?,
+                        type = ?,
+                        linkRotNotifications = ?,
+                        linkMetricsReports = ?
+                    WHERE email = ?;
+                `,
+                [
+                    newEmail,
+                    newType,
+                    newLinkRotNotifications,
+                    newLinkMetricsReports,
+                    currentEmail,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateAccountById(userId, newEmail, newType, newLinkRotNotifications, newLinkMetricsReports) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE users
+                    SET email = ?,
+                        type = ?,
                         linkRotNotifications = ?,
                         linkMetricsReports = ?
                     WHERE id = ?;
                 `,
                 [
-                    email,
-                    hashedPassword,
-                    linkRotNotifications,
-                    linkMetricsReports,
+                    newEmail,
+                    newType,
+                    newLinkRotNotifications,
+                    newLinkMetricsReports,
+                    userId,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateAccountPassword(userId, newHashedPassword) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE users
+                    SET hashedPassword = ?
+                    WHERE id = ?;
+                `,
+                [
+                    newHashedPassword,
                     userId,
                 ],
                 function (err, results, fields) {
