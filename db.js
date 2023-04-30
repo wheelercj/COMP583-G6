@@ -206,11 +206,9 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
                     FROM urls
-                    WHERE userId = ?
-                        AND deleted IS NULL
-                        AND disabled IS NULL;
+                    WHERE userId = ?;
                 `,
                 [
                     userId
@@ -224,13 +222,44 @@ export class DB {
     }
 
 
-    updateShortUrl(urlId, newShortUrl) {
+    /*
+        Resolves to false if a matching link was not found.
+    */
+    updateShortUrl(shortUrl, newShortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET shortUrl = ?
-                    WHERE urlId = ?;
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    newShortUrl,
+                    shortUrl
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+    }
+
+
+    /*
+        Resolves to false if a matching link was not found.
+    */
+    updateShortUrlById(urlId, newShortUrl) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE urls
+                    SET shortUrl = ?
+                    WHERE id = ?;
                 `,
                 [
                     newShortUrl,
@@ -238,20 +267,29 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
     }
 
 
+    /*
+        Resolves to false if a matching link was not found.
+    */
     updateOriginalUrl(shortUrl, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET originalUrl = ?
-                    WHERE shortUrl = ?;
+                    WHERE shortUrl = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     newOriginalUrl,
@@ -259,20 +297,29 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
     }
 
 
+    /*
+        Resolves to false if a matching link was not found.
+    */
     updateOriginalUrlById(urlId, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET originalUrl = ?
-                    WHERE id = ?;
+                    WHERE id = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     newOriginalUrl,
@@ -280,28 +327,71 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
     }
 
 
-    /* Doesn't actually delete the url, just marks it as deleted. */
+    /*
+        Doesn't actually delete the url, just marks it as deleted. Resolves to false if
+        a matching link was not found.
+    */
     deleteUrl(shortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET deleted = NOW()
-                    WHERE shortUrl = ?;
+                    WHERE shortUrl = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     shortUrl,
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+    }
+
+
+    /*
+        Doesn't actually delete the url, just marks it as deleted. Resolves to false if
+        a matching link was not found.
+    */
+    deleteUrlById(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE urls
+                    SET deleted = NOW()
+                    WHERE id = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
+                `,
+                [
+                    urlId,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });

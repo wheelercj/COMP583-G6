@@ -41,8 +41,8 @@ export async function createGraph(dailyClickCounts, dayNames) {
 
 /*
     Gets from the database a link's metrics from the last maxDays days (including
-    today). If both urlId and shortUrl are given, uses urlId. Requires at least one of
-    them. If unsuccessful, returns null.
+    today). Requires either urlId or shortUrl. If both are given, uses urlId. If
+    unsuccessful, returns null.
 
     Sample return value:
         {

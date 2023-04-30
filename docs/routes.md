@@ -21,6 +21,39 @@ example response:
 }
 ```
 
+## get all of a user's links
+
+`GET <baseUrl>/v1/urls/<userId>` returns a JSON object
+
+example response:
+
+```json
+{
+    "urls": [
+        {
+            "id": 1,
+            "originalUrl": "https://docs.google.com/document/d/1x1vIba275ZqG8QyG6ITHhW_pf3WH04_-GSS7cjyVE5U/edit",
+            "shortUrl": "db-schema",
+            "created": "2023-04-14T05:36:05.000Z",
+            "deleted": null,
+            "disabled": null,
+            "rotted": null,
+            "userId": 1
+        },
+        {
+            "id": 4,
+            "originalUrl": "https://expressjs.com/en/guide/routing.html",
+            "shortUrl": "KX6wpCY",
+            "created": "2023-04-28T05:35:39.000Z",
+            "deleted": null,
+            "disabled": null,
+            "rotted": null,
+            "userId": 1
+        }
+    ]
+}
+```
+
 ## create a new short link (either random or custom)
 
 `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
@@ -84,5 +117,43 @@ example response:
     ],
     "clicks": 13,
     "uniqueVisitors": 6
+}
+```
+
+## edit a short link
+
+`PATCH <baseUrl>/v1/url` expects a JSON object
+
+example request body:
+
+```json
+{
+    "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
+    "newShortUrl": "db"
+}
+```
+
+## edit where a link redirects to
+
+`PATCH <baseUrl>/v1/redirect` expects a JSON object
+
+example request body:
+
+```json
+{
+    "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
+    "newRedirect": "https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql",
+}
+```
+
+## delete a link
+
+`DELETE <baseUrl>/v1/url` expects a JSON object
+
+example request body:
+
+```json
+{
+    "urlId": 9  // alternatively, you can use the "shortUrl" attribute
 }
 ```

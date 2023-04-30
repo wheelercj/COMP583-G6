@@ -28,7 +28,12 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
+// Redirects to the original URL if the short URL exists.
 app.get("/:shortUrl", async function (req, res) {
+    if (req.params.shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
     let results = await db.selectUrl(req.params.shortUrl);
     if (results.length > 0) {
         await db.insertClick(results[0].id, req.ip);
@@ -38,16 +43,12 @@ app.get("/:shortUrl", async function (req, res) {
     }
 });
 
-app.get("/v1/ip", function (req, res) {
-    res.json(req.ip);
-});
-
-app.get("/v1/timestamp", async function (req, res) {
-    const result = await db.selectCurrentTimestamp();
-    res.json(result[0]['CURRENT_TIMESTAMP']);
-});
-
+// Returns the URL's data if the short URL exists.
 app.get("/v1/url/:shortUrl", async function (req, res) {
+    if (req.params.shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
     let result = await db.selectUrl(req.params.shortUrl);
     if (result.length > 0) {
         res.json(result[0]);
@@ -56,18 +57,27 @@ app.get("/v1/url/:shortUrl", async function (req, res) {
     }
 });
 
+/*
+    Creates a new short URL (either random or custom). If a random short URL is created,
+    returns the short URL.
+*/
 app.post("/v1/url", async function (req, res) {
     const originalUrl = req.body.url;
     const userId = req.body.userId;
     let shortUrl = req.body.custom;
-
     if (originalUrl === undefined) {
         res.status(400).send();
         return;
     }
+    if (userId === undefined) {
+        res.status(400).send();
+        return;
+    }
 
-    if (shortUrl) {
-        if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
+    if (shortUrl !== undefined) {
+        if (!isValidShortUrl(shortUrl)) {
+            res.status(400).send();
+        } else if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
             res.status(204).send();
         } else {
             res.status(400).send();
@@ -82,14 +92,33 @@ app.post("/v1/url", async function (req, res) {
     }
 });
 
+// Returns the user's URLs if the user exists.
+app.get("/v1/urls/:userId", async function (req, res) {
+    if (req.params.userId === undefined) {
+        res.status(400).send();
+        return;
+    }
+    const results = await db.selectUserUrls(req.params.userId);
+    if (results.length === 0) {
+        res.status(404).send();
+    } else {
+        res.json(results);
+    }
+});
+
 /*
-    If both urlId and shortUrl are given, uses urlId. Requires at least one of them.
+    Returns the URL's metrics if the URL exists.
+    Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.get("/v1/metrics", async function (req, res) {
     const urlId = req.body.urlId;
     const shortUrl = req.body.shortUrl;
     const maxDays = req.body.maxDays;
     if (urlId === undefined && shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+    if (maxDays === undefined) {
         res.status(400).send();
         return;
     }
@@ -110,3 +139,96 @@ app.get("/v1/metrics", async function (req, res) {
         res.status(400).send();
     }
 });
+
+/*
+    Edits a short URL.
+    Requires either urlId or shortUrl. If both are given, uses urlId.
+*/
+app.patch("/v1/url", async function (req, res) {
+    const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
+    const newShortUrl = req.body.newShortUrl;
+    if (newShortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+
+    if (urlId !== undefined) {
+        if (await db.updateShortUrlById(urlId, newShortUrl)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (newShortUrl !== undefined) {
+        if (await db.updateShortUrl(shortUrl, newShortUrl)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        res.status(400).send();
+    }
+});
+
+/*
+    Edits where a short URL redirects to.
+    Requires either urlId or shortUrl. If both are given, uses urlId.
+*/
+app.patch("/v1/redirect", async function (req, res) {
+    const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
+    const newRedirect = req.body.newRedirect;
+    if (newRedirect === undefined) {
+        res.status(400).send();
+        return;
+    }
+
+    if (urlId !== undefined) {
+        if (await db.updateOriginalUrlById(urlId, newRedirect)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (shortUrl !== undefined) {
+        if (await db.updateOriginalUrl(shortUrl, newRedirect)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        res.status(400).send();
+    }
+});
+
+/*
+    Deletes a URL.
+    Requires either urlId or shortUrl. If both are given, uses urlId.
+*/
+app.delete("/v1/url", async function (req, res) {
+    const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
+
+    if (urlId !== undefined) {
+        if (await db.deleteUrlById(urlId)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (shortUrl !== undefined) {
+        if (await db.deleteUrl(shortUrl)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        res.status(400).send();
+    }
+});
+
+
+function isValidShortUrl(shortUrl) {
+    if (shortUrl === undefined || shortUrl.length > 30) {
+        return false;
+    }
+    return /^[a-zA-Z0-9_-]+$/.test(shortUrl);
+}
