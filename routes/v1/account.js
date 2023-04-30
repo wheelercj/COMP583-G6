@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { DB } from '../../db.js';
-import { isValidEmail, isValidPassword } from '../../validators.js';
+import { isValidEmail, isValidPassword } from './validators.js';
 
 export const accountRouter = Router();
 const db = new DB();
