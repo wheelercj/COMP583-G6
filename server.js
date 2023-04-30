@@ -28,6 +28,7 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
+// Redirects to the original URL if the short URL exists.
 app.get("/:shortUrl", async function (req, res) {
     if (req.params.shortUrl === undefined) {
         res.status(400).send();
@@ -42,7 +43,7 @@ app.get("/:shortUrl", async function (req, res) {
     }
 });
 
-
+// Returns the URL's data if the short URL exists.
 app.get("/v1/url/:shortUrl", async function (req, res) {
     if (req.params.shortUrl === undefined) {
         res.status(400).send();
@@ -56,6 +57,10 @@ app.get("/v1/url/:shortUrl", async function (req, res) {
     }
 });
 
+/*
+    Creates a new short URL (either random or custom). If a random short URL is created,
+    returns the short URL.
+*/
 app.post("/v1/url", async function (req, res) {
     const originalUrl = req.body.url;
     const userId = req.body.userId;
@@ -85,6 +90,7 @@ app.post("/v1/url", async function (req, res) {
     }
 });
 
+// Returns the user's URLs if the user exists.
 app.get("/v1/urls/:userId", async function (req, res) {
     if (req.params.userId === undefined) {
         res.status(400).send();
@@ -99,6 +105,7 @@ app.get("/v1/urls/:userId", async function (req, res) {
 });
 
 /*
+    Returns the URL's metrics if the URL exists.
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.get("/v1/metrics", async function (req, res) {
@@ -132,6 +139,7 @@ app.get("/v1/metrics", async function (req, res) {
 });
 
 /*
+    Edits a short URL.
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.patch("/v1/url", async function (req, res) {
@@ -161,6 +169,7 @@ app.patch("/v1/url", async function (req, res) {
 });
 
 /*
+    Edits where a short URL redirects to.
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.patch("/v1/redirect", async function (req, res) {
@@ -190,6 +199,7 @@ app.patch("/v1/redirect", async function (req, res) {
 });
 
 /*
+    Deletes a URL.
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.delete("/v1/url", async function (req, res) {
