@@ -26,3 +26,27 @@ accountRouter.post("/", async function (req, res) {
         res.status(400).send();
     }
 });
+
+
+/*
+    Gets an account's data. Requires either userId or email. If both are given, uses
+    userId.
+*/
+accountRouter.get("/", async function (req, res) {
+    const { userId, email } = req.body;
+    let result;
+    if (userId !== undefined) {
+        result = await db.selectAccountById(userId);
+    } else if (email !== undefined) {
+        result = await db.selectAccount(email);
+    } else {
+        res.status(400).send();
+        return;
+    }
+    if (result.length > 0) {
+        delete result[0].hashedPassword;
+        res.json(result[0]);
+    } else {
+        res.status(404).send();
+    }
+});

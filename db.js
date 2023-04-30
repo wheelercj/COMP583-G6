@@ -89,6 +89,26 @@ export class DB {
     }
 
 
+    selectAccountById(userId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT id, email, hashedPassword, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    FROM users
+                    WHERE id = ?;
+                `,
+                [
+                    userId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
     updateAccount(userId, email, hashedPassword, linkRotNotifications, linkMetricsReports) {
         return new Promise(function (resolve, reject) {
             connection.query(
