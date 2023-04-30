@@ -12,8 +12,7 @@ const db = new DB();
     characters and the password must be between 8 and 50 (inclusive) ASCII characters.
 */
 accountRouter.post("/", async function (req, res) {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
     if (!isValidEmail(email) || !isValidPassword(password)) {
         res.status(400).send();
         return;

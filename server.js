@@ -62,9 +62,7 @@ app.get("/v1/urls/:userId", async function (req, res) {
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.get("/v1/metrics", async function (req, res) {
-    const urlId = req.body.urlId;
-    const shortUrl = req.body.shortUrl;
-    const maxDays = req.body.maxDays;
+    const { urlId, shortUrl, maxDays } = req.query;
     if (urlId === undefined && shortUrl === undefined) {
         res.status(400).send();
         return;
@@ -96,9 +94,7 @@ app.get("/v1/metrics", async function (req, res) {
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.patch("/v1/redirect", async function (req, res) {
-    const urlId = req.body.urlId;
-    const shortUrl = req.body.shortUrl;
-    const newRedirect = req.body.newRedirect;
+    const { urlId, shortUrl, newRedirect } = req.body;
     if (newRedirect === undefined) {
         res.status(400).send();
         return;

@@ -63,9 +63,7 @@ urlRouter.get("/:shortUrl", async function (req, res) {
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 urlRouter.patch("/", async function (req, res) {
-    const urlId = req.body.urlId;
-    const shortUrl = req.body.shortUrl;
-    const newShortUrl = req.body.newShortUrl;
+    const { urlId, shortUrl, newShortUrl } = req.body;
     if (!isValidShortUrl(newShortUrl)) {
         res.status(400).send();
         return;
@@ -94,8 +92,7 @@ urlRouter.patch("/", async function (req, res) {
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 urlRouter.delete("/", async function (req, res) {
-    const urlId = req.body.urlId;
-    const shortUrl = req.body.shortUrl;
+    const { urlId, shortUrl } = req.body;
 
     if (urlId !== undefined) {
         if (await db.deleteUrlById(urlId)) {
