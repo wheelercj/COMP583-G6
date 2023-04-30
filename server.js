@@ -29,6 +29,10 @@ app.get("/", function (req, res) {
 });
 
 app.get("/:shortUrl", async function (req, res) {
+    if (req.params.shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
     let results = await db.selectUrl(req.params.shortUrl);
     if (results.length > 0) {
         await db.insertClick(results[0].id, req.ip);
@@ -48,6 +52,10 @@ app.get("/v1/timestamp", async function (req, res) {
 });
 
 app.get("/v1/url/:shortUrl", async function (req, res) {
+    if (req.params.shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
     let result = await db.selectUrl(req.params.shortUrl);
     if (result.length > 0) {
         res.json(result[0]);
@@ -60,13 +68,16 @@ app.post("/v1/url", async function (req, res) {
     const originalUrl = req.body.url;
     const userId = req.body.userId;
     let shortUrl = req.body.custom;
-
     if (originalUrl === undefined) {
         res.status(400).send();
         return;
     }
+    if (userId === undefined) {
+        res.status(400).send();
+        return;
+    }
 
-    if (shortUrl) {
+    if (shortUrl !== undefined) {
         if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
             res.status(204).send();
         } else {
@@ -83,6 +94,10 @@ app.post("/v1/url", async function (req, res) {
 });
 
 app.get("/v1/urls/:userId", async function (req, res) {
+    if (req.params.userId === undefined) {
+        res.status(400).send();
+        return;
+    }
     const results = await db.selectUserUrls(req.params.userId);
     if (results.length === 0) {
         res.status(404).send();
@@ -99,6 +114,10 @@ app.get("/v1/metrics", async function (req, res) {
     const shortUrl = req.body.shortUrl;
     const maxDays = req.body.maxDays;
     if (urlId === undefined && shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+    if (maxDays === undefined) {
         res.status(400).send();
         return;
     }
