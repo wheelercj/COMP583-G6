@@ -232,3 +232,18 @@ sample request body:
 The "newEmail", "newType", "newLinkRotNotifications", and "newLinkMetricsReports" attributes are required. For any of these that should not change, give the current value.
 
 Email addresses can be up to 254 characters long.
+
+### edit an account's password
+
+`PATCH <baseUrl>/v1/changePassword` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4,  // alternatively, you can use the "email" attribute
+    "newPassword": "87654321"
+}
+```
+
+Passwords can be between 8 and 50 (inclusive) ASCII characters long.

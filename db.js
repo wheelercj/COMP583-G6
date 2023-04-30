@@ -163,7 +163,28 @@ export class DB {
     }
 
 
-    updateAccountPassword(userId, newHashedPassword) {
+    updateAccountPassword(email, newHashedPassword) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE users
+                    SET hashedPassword = ?
+                    WHERE email = ?;
+                `,
+                [
+                    newHashedPassword,
+                    email,
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    updateAccountPasswordById(userId, newHashedPassword) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
