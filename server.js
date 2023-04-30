@@ -75,7 +75,9 @@ app.post("/v1/url", async function (req, res) {
     }
 
     if (shortUrl !== undefined) {
-        if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
+        if (!isValidShortUrl(shortUrl)) {
+            res.status(400).send();
+        } else if (await createCustomShortUrl(originalUrl, shortUrl, userId)) {
             res.status(204).send();
         } else {
             res.status(400).send();
@@ -222,3 +224,11 @@ app.delete("/v1/url", async function (req, res) {
         res.status(400).send();
     }
 });
+
+
+function isValidShortUrl(shortUrl) {
+    if (shortUrl === undefined || shortUrl.length > 30) {
+        return false;
+    }
+    return /^[a-zA-Z0-9_-]+$/.test(shortUrl);
+}
