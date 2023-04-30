@@ -1,6 +1,8 @@
 # web API routes
 
-## get a link's data
+## links
+
+### get a link's data
 
 `GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
 
@@ -21,7 +23,7 @@ sample response:
 }
 ```
 
-## get all of a user's links
+### get all of a user's links
 
 `GET <baseUrl>/v1/urls/<userId>` returns a JSON object
 
@@ -54,7 +56,7 @@ sample response:
 }
 ```
 
-## create a new short link (either random or custom)
+### create a new short link (either random or custom)
 
 `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
@@ -85,7 +87,7 @@ another sample request body:
 
 When a custom link to redirect from is given, there is no JSON response.
 
-## get a link's metrics
+### get a link's metrics
 
 `GET <baseUrl>/v1/metrics` expects and returns JSON objects
 
@@ -120,7 +122,7 @@ sample response:
 }
 ```
 
-## edit a short link
+### edit a short link
 
 `PATCH <baseUrl>/v1/url` expects a JSON object
 
@@ -133,7 +135,7 @@ sample request body:
 }
 ```
 
-## edit where a link redirects to
+### edit where a link redirects to
 
 `PATCH <baseUrl>/v1/redirect` expects a JSON object
 
@@ -146,7 +148,7 @@ sample request body:
 }
 ```
 
-## delete a link
+### delete a link
 
 `DELETE <baseUrl>/v1/url` expects a JSON object
 
@@ -158,7 +160,9 @@ sample request body:
 }
 ```
 
-## create an account
+## accounts
+
+### create an account
 
 `POST <baseUrl>/v1/account` expects and returns JSON objects
 
@@ -181,7 +185,7 @@ sample response:
 
 Email addresses can be up to 254 characters long and passwords can be between 8 and 50 (inclusive) ASCII characters long.
 
-## get an account's data
+### get an account's data
 
 `GET <baseUrl>/v1/account` returns a JSON object
 
