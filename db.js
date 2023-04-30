@@ -44,20 +44,20 @@ export class DB {
 
     /*
         The email address must be 254 characters or less.
-        The password must be 200 characters or less.
+        The hashed password must be 60 characters or less.
         The type must be one of 'free', 'premium', 'business', or 'admin'.
     */
-    insertAccount(email, password, type) {
+    insertAccount(email, hashedPassword, type) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     INSERT INTO users
-                    (email, password, type)
+                    (email, hashedPassword, type)
                     VALUES (?, ?, ?);
                 `,
                 [
                     email,
-                    password,
+                    hashedPassword,
                     type
                 ],
                 function (err, results, fields) {
@@ -73,7 +73,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, email, password, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    SELECT id, email, hashedPassword, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
                     FROM users
                     WHERE email = ?;
                 `,
@@ -89,20 +89,20 @@ export class DB {
     }
 
 
-    updateAccount(userId, email, password, linkRotNotifications, linkMetricsReports) {
+    updateAccount(userId, email, hashedPassword, linkRotNotifications, linkMetricsReports) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE users
                     SET email = ?,
-                        password = ?,
+                        hashedPassword = ?,
                         linkRotNotifications = ?,
                         linkMetricsReports = ?
                     WHERE id = ?;
                 `,
                 [
                     email,
-                    password,
+                    hashedPassword,
                     linkRotNotifications,
                     linkMetricsReports,
                     userId,

@@ -12,7 +12,7 @@ USE url_shortener;
 CREATE TABLE users (
     id SERIAL,
     email VARCHAR(254) NOT NULL UNIQUE,
-    password VARCHAR(200) NOT NULL,
+    hashedPassword VARCHAR(60) NOT NULL,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     type ENUM('free', 'premium', 'business', 'admin') NOT NULL,
     loggedIn ENUM('true', 'false') NOT NULL DEFAULT 'false',
