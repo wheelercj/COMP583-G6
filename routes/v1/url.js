@@ -1,17 +1,10 @@
 import { Router } from 'express';
 import { createRandomShortUrl, createCustomShortUrl } from './shorten-url.js';
 import { DB } from '../../db.js';
+import { isValidShortUrl } from '../../validators.js';
 
 export const urlRouter = Router();
 const db = new DB();
-
-
-function isValidShortUrl(shortUrl) {
-    if (shortUrl === undefined || shortUrl.length > 30) {
-        return false;
-    }
-    return /^[a-zA-Z0-9_-]+$/.test(shortUrl);
-}
 
 
 /*
