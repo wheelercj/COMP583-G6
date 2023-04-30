@@ -66,7 +66,7 @@ urlRouter.patch("/", async function (req, res) {
     const urlId = req.body.urlId;
     const shortUrl = req.body.shortUrl;
     const newShortUrl = req.body.newShortUrl;
-    if (newShortUrl === undefined || !isValidShortUrl(newShortUrl)) {
+    if (!isValidShortUrl(newShortUrl)) {
         res.status(400).send();
         return;
     }
