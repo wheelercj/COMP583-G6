@@ -120,7 +120,7 @@ example response:
 }
 ```
 
-## edit where a link redirects to
+## edit a short link
 
 `PATCH <baseUrl>/v1/url` expects a JSON object
 
@@ -129,7 +129,20 @@ example request body:
 ```json
 {
     "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
-    "newRedirect": "https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql"
+    "newShortUrl": "db"
+}
+```
+
+## edit where a link redirects to
+
+`PATCH <baseUrl>/v1/redirect` expects a JSON object
+
+example request body:
+
+```json
+{
+    "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
+    "newRedirect": "https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql",
 }
 ```
 

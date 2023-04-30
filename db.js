@@ -222,13 +222,44 @@ export class DB {
     }
 
 
-    updateShortUrl(urlId, newShortUrl) {
+    /*
+        Resolves to false if a matching link was not found.
+    */
+    updateShortUrl(shortUrl, newShortUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET shortUrl = ?
-                    WHERE urlId = ?;
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    newShortUrl,
+                    shortUrl
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+    }
+
+
+    /*
+        Resolves to false if a matching link was not found.
+    */
+    updateShortUrlById(urlId, newShortUrl) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    UPDATE urls
+                    SET shortUrl = ?
+                    WHERE id = ?;
                 `,
                 [
                     newShortUrl,
@@ -236,7 +267,11 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results === undefined || results.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
@@ -262,7 +297,7 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    if (results.affectedRows == 0) {
+                    if (results === undefined || results.affectedRows === 0) {
                         resolve(false);
                     } else {
                         resolve(results);
@@ -292,7 +327,7 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    if (results.affectedRows == 0) {
+                    if (results === undefined || results.affectedRows === 0) {
                         resolve(false);
                     } else {
                         resolve(results);
@@ -322,7 +357,7 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    if (results.affectedRows == 0) {
+                    if (results === undefined || results.affectedRows === 0) {
                         resolve(false);
                     } else {
                         resolve(results);
@@ -352,7 +387,7 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    if (results.affectedRows == 0) {
+                    if (results === undefined || results.affectedRows === 0) {
                         resolve(false);
                     } else {
                         resolve(results);
