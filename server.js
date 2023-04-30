@@ -123,6 +123,31 @@ app.get("/v1/metrics", async function (req, res) {
 /*
     Requires either urlId or shortUrl. If both are given, uses urlId.
 */
+app.patch("/v1/url", async function (req, res) {
+    const urlId = req.body.urlId;
+    const shortUrl = req.body.shortUrl;
+    const newRedirect = req.body.newRedirect;
+
+    if (urlId !== undefined) {
+        if (await db.updateOriginalUrlById(urlId, newRedirect)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (shortUrl !== undefined) {
+        if (await db.updateOriginalUrl(shortUrl, newRedirect)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        res.status(400).send();
+    }
+});
+
+/*
+    Requires either urlId or shortUrl. If both are given, uses urlId.
+*/
 app.delete("/v1/url", async function (req, res) {
     const urlId = req.body.urlId;
     const shortUrl = req.body.shortUrl;

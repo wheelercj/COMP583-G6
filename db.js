@@ -243,13 +243,18 @@ export class DB {
     }
 
 
+    /*
+        Resolves to false if a matching link was not found.
+    */
     updateOriginalUrl(shortUrl, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET originalUrl = ?
-                    WHERE shortUrl = ?;
+                    WHERE shortUrl = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     newOriginalUrl,
@@ -257,20 +262,29 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results.affectedRows == 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
     }
 
 
+    /*
+        Resolves to false if a matching link was not found.
+    */
     updateOriginalUrlById(urlId, newOriginalUrl) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
                     UPDATE urls
                     SET originalUrl = ?
-                    WHERE id = ?;
+                    WHERE id = ?
+                        AND deleted IS NULL
+                        AND disabled IS NULL;
                 `,
                 [
                     newOriginalUrl,
@@ -278,7 +292,11 @@ export class DB {
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
-                    resolve(results);
+                    if (results.affectedRows == 0) {
+                        resolve(false);
+                    } else {
+                        resolve(results);
+                    }
                 }
             );
         });
