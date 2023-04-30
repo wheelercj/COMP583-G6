@@ -95,3 +95,26 @@ accountRouter.put("/", async function (req, res) {
         res.status(400).send();
     }
 });
+
+
+/*
+    Deletes an account. Requires either userId or email. If both are given, uses userId.
+*/
+accountRouter.delete("/", async function (req, res) {
+    const { userId, email } = req.body;
+    if (userId !== undefined) {
+        if (await db.permanentlyDeleteAccountById(userId)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else if (email !== undefined) {
+        if (await db.permanentlyDeleteAccount(email)) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+    } else {
+        res.status(400).send();
+    }
+});

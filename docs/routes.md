@@ -247,3 +247,15 @@ sample request body:
 ```
 
 Passwords can be between 8 and 50 (inclusive) ASCII characters long.
+
+### permanently delete an account
+
+`DELETE <baseUrl>/v1/account` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4  // alternatively, you can use the "email" attribute
+}
+```

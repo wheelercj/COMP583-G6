@@ -205,7 +205,26 @@ export class DB {
     }
 
 
-    permanentlyDeleteAccount(userId) {
+    permanentlyDeleteAccount(email) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    DELETE FROM users
+                    WHERE email = ?;
+                `,
+                [
+                    email
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    permanentlyDeleteAccountById(userId) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
