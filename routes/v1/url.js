@@ -6,6 +6,14 @@ export const urlRouter = Router();
 const db = new DB();
 
 
+function isValidShortUrl(shortUrl) {
+    if (shortUrl === undefined || shortUrl.length > 30) {
+        return false;
+    }
+    return /^[a-zA-Z0-9_-]+$/.test(shortUrl);
+}
+
+
 /*
     Creates a new short URL (either random or custom). If a random short URL is created,
     returns the short URL.
@@ -42,14 +50,6 @@ urlRouter.post("/", async function (req, res) {
 });
 
 
-function isValidShortUrl(shortUrl) {
-    if (shortUrl === undefined || shortUrl.length > 30) {
-        return false;
-    }
-    return /^[a-zA-Z0-9_-]+$/.test(shortUrl);
-}
-
-
 // Returns the URL's data if the short URL exists.
 urlRouter.get("/:shortUrl", async function (req, res) {
     if (req.params.shortUrl === undefined) {
@@ -73,7 +73,7 @@ urlRouter.patch("/", async function (req, res) {
     const urlId = req.body.urlId;
     const shortUrl = req.body.shortUrl;
     const newShortUrl = req.body.newShortUrl;
-    if (newShortUrl === undefined) {
+    if (newShortUrl === undefined || !isValidShortUrl(newShortUrl)) {
         res.status(400).send();
         return;
     }
@@ -84,7 +84,7 @@ urlRouter.patch("/", async function (req, res) {
         } else {
             res.status(400).send();
         }
-    } else if (newShortUrl !== undefined) {
+    } else if (shortUrl !== undefined) {
         if (await db.updateShortUrl(shortUrl, newShortUrl)) {
             res.status(204).send();
         } else {
