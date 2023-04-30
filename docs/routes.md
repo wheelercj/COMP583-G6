@@ -157,3 +157,26 @@ example request body:
     "urlId": 9  // alternatively, you can use the "shortUrl" attribute
 }
 ```
+
+## create an account
+
+`POST <baseUrl>/v1/account` expects and returns JSON objects
+
+example request body:
+
+```json
+{
+    "email": "arthur@dent.com",
+    "password": "12345"
+}
+```
+
+example response:
+
+```json
+{
+    "userId": 4
+}
+```
+
+Email addresses can be up to 254 characters long and passwords can be between 8 and 50 (inclusive) ASCII characters long.
