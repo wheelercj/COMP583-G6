@@ -65,7 +65,7 @@ sample request body:
 ```json
 {
     "url": "https://expressjs.com/en/guide/routing.html",
-    "userId": 1
+    "userId": 1  // not required for users not logged in
 }
 ```
 
@@ -81,7 +81,7 @@ another sample request body:
 {
     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
     "custom": "status-codes",
-    "userId": 1
+    "userId": 1  // not required for users not logged in
 }
 ```
 
