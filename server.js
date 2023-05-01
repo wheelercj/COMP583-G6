@@ -8,7 +8,7 @@ import * as path from 'path';
 import { DB } from './db.js';
 import { router } from './routes/index.js';
 import { fetchMetrics, createGraph } from './metrics.js';
-import { isValidPassword } from './routes/v1/validators.js';
+import { isValidPassword, isValidUrl } from './routes/v1/validators.js';
 
 const app = express();
 const db = new DB();
@@ -103,7 +103,7 @@ app.get("/v1/metrics", async function (req, res) {
 */
 app.patch("/v1/redirect", async function (req, res) {
     const { urlId, shortUrl, newRedirect } = req.body;
-    if (newRedirect === undefined) {
+    if (!isValidUrl(newRedirect)) {
         res.status(400).send();
         return;
     }
@@ -122,6 +122,32 @@ app.patch("/v1/redirect", async function (req, res) {
         }
     } else {
         res.status(400).send();
+    }
+});
+
+
+/*
+    Logs in to an account.
+*/
+app.post("/v1/login", async function (req, res) {
+    const { email, password } = req.body;
+    if (email === undefined || password === undefined) {
+        res.status(400).send();
+        return;
+    }
+
+    const accounts = await db.selectAccount(email);
+    if (accounts.length === 0) {
+        res.status(404).send();
+    } else {
+        let account = accounts[0];
+        if (await bcrypt.compare(password, account.hashedPassword)) {
+            delete account.hashedPassword;
+            account.token = { user: account.email };
+            res.json(account);
+        } else {
+            res.status(401).send();
+        }
     }
 });
 

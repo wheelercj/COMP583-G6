@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createRandomShortUrl, createCustomShortUrl } from './shorten-url.js';
 import { DB } from '../../db.js';
-import { isValidShortUrl } from './validators.js';
+import { isValidShortUrl, isValidUrl } from './validators.js';
 
 export const urlRouter = Router();
 const db = new DB();
@@ -15,7 +15,7 @@ urlRouter.post("/", async function (req, res) {
     const originalUrl = req.body.url;
     const userId = req.body.userId;
     let shortUrl = req.body.custom;
-    if (originalUrl === undefined || originalUrl.length === 0) {
+    if (!isValidUrl(originalUrl)) {
         res.status(400).send();
         return;
     }
