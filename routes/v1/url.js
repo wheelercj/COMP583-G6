@@ -15,7 +15,7 @@ urlRouter.post("/", async function (req, res) {
     const originalUrl = req.body.url;
     const userId = req.body.userId;
     let shortUrl = req.body.custom;
-    if (originalUrl === undefined) {
+    if (originalUrl === undefined || originalUrl.length === 0) {
         res.status(400).send();
         return;
     }

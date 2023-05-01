@@ -1,34 +1,74 @@
 <!--
 Programmer Name: Miroo Yum
 -->
-<!DOCTYPE html>
-<html lang="en">
 
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MakeMeShort Homepage</title>
-    <link rel="stylesheet" type="text/css" href="/public/css/index.css">
-    </link>
-  </head>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeMeShort Homepage</title>
+  <link rel="stylesheet" href="/public/css/index.css">
+  </link>
+  <!-- <script src="/COMP583-G6/public/js/button.js"></script> -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
 
-  <body>
+<body>
+  <script src="/public/button.js"></script>
 
-    <div class="header">
-      <button id="about-btn">About</button>
-      <button id="upgrade-btn">Pricing</button>
-      <button id="login-btn">Log In</button>
-      <script src="/public/button.js"></script>
+  <div class="header">
+    <button id="about-btn">About</button>
+    <button id="upgrade-btn">Pricing</button>
+    <button id="login-btn">Log In</button>
+    <button id="infos-btn">Info</button>
+  </div>
+
+  <div class="container">
+    <div class="Logo">
+      <span><img src="/public/images/logo.png" alt=""></span>
     </div>
+    <form action="" class="searchbar" id="searchbar" onsubmit="return false">
+      <input id="searchbar_inputfield" type="text" placeholder="Original Link here">
+      <button onclick="return_ShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
+    </form>
+    <p id="return_OGURL_p"></p>
+    <p id="returnURL_p"></p>
 
-    <div class="container">
-      <div class="Logo">
-        <span><img src="/public/images/logo.png" alt=""></span>
-      </div>
-      <form action="" class="searchbar">
-        <input type="text" placeholder="Original Link here" name="q">
-        <button type="submit"><img src="/public/images/search_icon.png" alt=""></button>
-      </form>
-    </div>
-  </body>
+    <script>
+      src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
+      const baseUrl = 'http://localhost:3306';
+      const createURLBtn = document.getElementById("createURL_btn");
+      const return_OGURL_p = document.getElementById("return_OGURL_p");
+      const searchbar_inputfield = document.getElementById("searchbar_inputfield");
+      function return_ShortURL() {
+        postGuestUrl(searchbar_inputfield.value).then((data) => {
+          return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
+        }).catch((error) => {
+          console.log(error);
+        });
+        searchbar_inputfield.value = "";
+        document.getElementById("searchbar")[0].placeholder = "Original Link here";
+      }
+
+      async function postGuestUrl(originalUrl) {
+        const json = {
+          "url": originalUrl,
+        }
+
+        try {
+          const response = await axios.post(`${baseUrl}/v1/url`, json);
+          console.log(`status: ${response.status}`);
+          if (response.status >= 200 && response.status < 300) {
+            console.log(`data: ${response.data}`);
+            return response.data;
+          } else {
+            console.log(`status: ${response.status}`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+    </script>
+  </div>
+</body>
 
 </html>

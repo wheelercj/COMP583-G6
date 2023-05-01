@@ -1,13 +1,12 @@
 /*
 Programmer Name: Miroo Yum
 */
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-
 .container {
     flex-direction: column;
     align-items: center;
@@ -19,29 +18,29 @@ Programmer Name: Miroo Yum
     padding: 5%;
     display: flex;
     justify-content: center;
-}
-
-.header {
+  }
+.header{
     background: rgb(208, 218, 236);
     padding: 10px;
     text-align: right;
 }
 
-.header button {
+.header button{
     background: transparent;
-    border-color: rgb(0, 0, 0);
+    border-color:  rgb(0, 0, 0);
     padding: 5px 10px;
     font-size: 17px;
 }
 
-.Logo {
+.Logo{
     margin-bottom: 50px;
 }
 
-.searchbar {
+.searchbar{
+    margin-bottom: 50px;
     width: 80%;
     max-width: 700px;
-    background: mediumpurple;
+    background:mediumpurple ;
     display: flex;
     align-items: center;
     border-radius: 60px;
@@ -49,27 +48,28 @@ Programmer Name: Miroo Yum
     backdrop-filter: blur(4px) saturate(180%);
 }
 
-.searchbar input {
+.searchbar input{
     background: transparent;
     flex: 1;
     border: 0;
     outline: none;
     padding: 24px 20px;
     font-size: 20px;
+    color: white;
+}
+::placeholder{
     color: thistle;
 }
 
-::placeholder {
-    color: white;
-}
-
-.searchbar button img {
+.searchbar button img{
     width: 60px;
     border-radius: 50%;
-
 }
 
-.searchbar button {
+.searchbar button:hover{
+    background-color:black;
+}
+.searchbar button{
     border: 0;
     border-radius: 50%;
     width: 60px;
