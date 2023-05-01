@@ -12,14 +12,14 @@ Programmer Name: Miroo Yum
 </head>
 
 <body>
-  <script src="/public/button.js"></script>
 
   <div class="header">
     <button id="about-btn">About</button>
     <button id="upgrade-btn">Pricing</button>
     <button id="login-btn">Log In</button>
     <button id="infos-btn">Info</button>
-  </div>
+    <script src="/public/button.js"></script>
+</div>
 
   <div class="container">
     <div class="Logo">
@@ -34,19 +34,38 @@ Programmer Name: Miroo Yum
 
     <script>
       src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
-      const baseUrl = 'https://makemeshort.buzz';  // change to 'http://localhost:3306' for local testing
+      const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
       const createURLBtn = document.getElementById("createURL_btn");
       const return_OGURL_p = document.getElementById("return_OGURL_p");
       const searchbar_inputfield = document.getElementById("searchbar_inputfield");
-      function return_ShortURL() {
-        postGuestUrl(searchbar_inputfield.value).then((data) => {
-          return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
-        }).catch((error) => {
-          console.log(error);
-        });
-        searchbar_inputfield.value = "";
-        document.getElementById("searchbar")[0].placeholder = "Original Link here";
-      }
+      const isValidUrl = urlString=> {
+              var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+                '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+            return !!urlPattern.test(urlString);
+        }
+        
+        function return_ShortURL() {
+            if(!isValidUrl(searchbar_inputfield.value)){
+                return_OGURL_p.innerHTML=searchbar_inputfield.value+" is not valid";
+                // searchbar_inputfield.value = "";
+                // document.getElementById("searchbar")[0].placeholder = "Original Link here";
+            }
+            else{
+                postGuestUrl(searchbar_inputfield.value).then((data) => {
+                    return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
+                }).catch((error) => {
+                    console.log(error);
+                });
+                // searchbar_inputfield.value = "";
+                // document.getElementById("searchbar")[0].placeholder = "Original Link here";
+            }
+            searchbar_inputfield.value = "";
+            document.getElementById("searchbar")[0].placeholder = "Original Link here";
+        }
 
       async function postGuestUrl(originalUrl) {
         const json = {
