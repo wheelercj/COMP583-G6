@@ -19,10 +19,6 @@ urlRouter.post("/", async function (req, res) {
         res.status(400).send();
         return;
     }
-    if (userId === undefined) {
-        res.status(400).send();
-        return;
-    }
 
     if (shortUrl !== undefined) {
         if (!isValidShortUrl(shortUrl)) {

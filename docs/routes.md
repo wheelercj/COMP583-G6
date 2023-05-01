@@ -1,12 +1,14 @@
 # web API routes
 
-## get a link's data
+## links
+
+### get a link's data
 
 `GET <baseUrl>/v1/url/<shortUrl>` returns a JSON object
 
 `<shortUrl>` is not an entire URL, just the unique part after the site's base URL.
 
-example response:
+sample response:
 
 ```json
 {
@@ -21,11 +23,11 @@ example response:
 }
 ```
 
-## get all of a user's links
+### get all of a user's links
 
 `GET <baseUrl>/v1/urls/<userId>` returns a JSON object
 
-example response:
+sample response:
 
 ```json
 {
@@ -54,16 +56,16 @@ example response:
 }
 ```
 
-## create a new short link (either random or custom)
+### create a new short link (either random or custom)
 
 `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
-example request body:
+sample request body:
 
 ```json
 {
     "url": "https://expressjs.com/en/guide/routing.html",
-    "userId": 1
+    "userId": 1  // not required for users not logged in
 }
 ```
 
@@ -73,23 +75,23 @@ and its response:
 "KX6wpCY"
 ```
 
-another example request body:
+another sample request body:
 
 ```json
 {
     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
     "custom": "status-codes",
-    "userId": 1
+    "userId": 1  // not required for users not logged in
 }
 ```
 
 When a custom link to redirect from is given, there is no JSON response.
 
-## get a link's metrics
+### get a link's metrics
 
 `GET <baseUrl>/v1/metrics` expects and returns JSON objects
 
-example request body:
+sample request body:
 
 ```json
 {
@@ -98,7 +100,7 @@ example request body:
 }
 ```
 
-example response:
+sample response:
 
 ```json
 {
@@ -120,11 +122,11 @@ example response:
 }
 ```
 
-## edit a short link
+### edit a short link
 
 `PATCH <baseUrl>/v1/url` expects a JSON object
 
-example request body:
+sample request body:
 
 ```json
 {
@@ -133,11 +135,11 @@ example request body:
 }
 ```
 
-## edit where a link redirects to
+### edit where a link redirects to
 
 `PATCH <baseUrl>/v1/redirect` expects a JSON object
 
-example request body:
+sample request body:
 
 ```json
 {
@@ -146,11 +148,11 @@ example request body:
 }
 ```
 
-## delete a link
+### delete a link
 
 `DELETE <baseUrl>/v1/url` expects a JSON object
 
-example request body:
+sample request body:
 
 ```json
 {
@@ -158,20 +160,22 @@ example request body:
 }
 ```
 
-## create an account
+## accounts
+
+### create an account
 
 `POST <baseUrl>/v1/account` expects and returns JSON objects
 
-example request body:
+sample request body:
 
 ```json
 {
     "email": "arthur@dent.com",
-    "password": "12345"
+    "password": "12345678"
 }
 ```
 
-example response:
+sample response:
 
 ```json
 {
@@ -180,3 +184,78 @@ example response:
 ```
 
 Email addresses can be up to 254 characters long and passwords can be between 8 and 50 (inclusive) ASCII characters long.
+
+### get an account's data
+
+`GET <baseUrl>/v1/account` expects and returns JSON objects
+
+sample request body:
+
+```json
+{
+    "userId": 4  // alternatively, you can use the "email" attribute
+}
+```
+
+sample response:
+
+```json
+{
+    "id": 4,
+    "email": "arthur@dent.com",
+    "created": "2023-04-28T05:35:39.000Z",
+    "type": "free",
+    "loggedIn": "true",
+    "suspended": null,
+    "linkRotNotifications": "true",
+    "linkMetricsReports": "true"
+}
+```
+
+### edit an account (except the password)
+
+`PUT <baseUrl>/v1/account` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4,  // alternatively, you can use the "email" attribute
+
+    "newEmail": "sandwich@shop.com",
+    "newType": "free",
+    "newLinkRotNotifications": "true",
+    "newLinkMetricsReports": "true"
+}
+```
+
+The "newEmail", "newType", "newLinkRotNotifications", and "newLinkMetricsReports" attributes are required. For any of these that should not change, give the current value.
+
+Email addresses can be up to 254 characters long.
+
+### edit an account's password
+
+`PATCH <baseUrl>/v1/changePassword` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4,  // alternatively, you can use the "email" attribute
+    "newPassword": "87654321"
+}
+```
+
+Passwords can be between 8 and 50 (inclusive) ASCII characters long.
+
+### permanently delete an account
+
+`DELETE <baseUrl>/v1/account` expects a JSON object
+
+sample request body:
+
+```json
+{
+    "userId": 4  // alternatively, you can use the "email" attribute
+}
+```
