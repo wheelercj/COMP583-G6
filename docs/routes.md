@@ -18,7 +18,6 @@ sample response:
   "created": "2023-04-14T05:36:05.000Z",
   "deleted": null,
   "disabled": null,
-  "rotted": null,
   "userId": 1
 }
 ```
@@ -26,6 +25,8 @@ sample response:
 ### get all of a user's links
 
 `GET <baseUrl>/v1/urls/<userId>` returns a JSON object
+
+Note that `urls` is plural in this route.
 
 sample response:
 
@@ -39,7 +40,6 @@ sample response:
             "created": "2023-04-14T05:36:05.000Z",
             "deleted": null,
             "disabled": null,
-            "rotted": null,
             "userId": 1
         },
         {
@@ -49,7 +49,6 @@ sample response:
             "created": "2023-04-28T05:35:39.000Z",
             "deleted": null,
             "disabled": null,
-            "rotted": null,
             "userId": 1
         }
     ]
@@ -60,28 +59,48 @@ sample response:
 
 `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
-sample request body:
+sample request body where the user is NOT logged in:
 
 ```json
 {
-    "url": "https://expressjs.com/en/guide/routing.html",
-    "userId": 1  // not required for users not logged in
+    "url": "https://expressjs.com/en/guide/routing.html"
 }
 ```
 
-and its response:
+and its response (a randomly generated short link):
 
 ```json
 "KX6wpCY"
 ```
 
-another sample request body:
+another sample request body, and this time the user is logged in:
 
 ```json
 {
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "url": "https://expressjs.com/en/guide/routing.html",
+    "userId": 4
+}
+```
+
+and its response (a randomly generated short link):
+
+```json
+"KX6wpCY"
+```
+
+another sample request body where the logged in user wants to create a custom short link:
+
+```json
+{
+    "token": {
+        "user": "arthur@dent.com"
+    },
     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
     "custom": "status-codes",
-    "userId": 1  // not required for users not logged in
+    "userId": 4
 }
 ```
 
@@ -95,7 +114,7 @@ sample request body:
 
 ```json
 {
-    "urlId": 2,  // alternatively, you can use the "shortUrl" attribute
+    "shortUrl": "status-codes",
     "maxDays": 7
 }
 ```
@@ -122,6 +141,17 @@ sample response:
 }
 ```
 
+If the given shortUrl does not exist, has been deleted or disabled, or has not had any clicks within the last maxDays days, a JSON object will still be returned:
+
+```json
+{
+    "graph": "<img src=\"data:image/png;base64,iVBORw0KGgoAA . . . rkJggg==\" />",
+    "locations": [],
+    "clicks": 0,
+    "uniqueVisitors": 0
+}
+```
+
 ### edit a short link
 
 `PATCH <baseUrl>/v1/url` expects a JSON object
@@ -130,8 +160,12 @@ sample request body:
 
 ```json
 {
-    "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
-    "newShortUrl": "db"
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4,
+    "shortUrl": "status-codes",
+    "newShortUrl": "status"
 }
 ```
 
@@ -143,7 +177,11 @@ sample request body:
 
 ```json
 {
-    "urlId": 1,  // alternatively, you can use the "shortUrl" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4,
+    "shortUrl": "db-schema",
     "newRedirect": "https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql",
 }
 ```
@@ -156,7 +194,11 @@ sample request body:
 
 ```json
 {
-    "urlId": 9  // alternatively, you can use the "shortUrl" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4,
+    "shortUrl": "db-schema"
 }
 ```
 
@@ -179,7 +221,16 @@ sample response:
 
 ```json
 {
-    "userId": 4
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "id": 4,
+    "email": "arthur@dent.com",
+    "created": "2023-04-28T05:35:39.000Z",
+    "type": "free",
+    "suspended": null,
+    "linkRotNotifications": "true",
+    "linkMetricsReports": "true"
 }
 ```
 
@@ -193,7 +244,10 @@ sample request body:
 
 ```json
 {
-    "userId": 4  // alternatively, you can use the "email" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4
 }
 ```
 
@@ -205,7 +259,34 @@ sample response:
     "email": "arthur@dent.com",
     "created": "2023-04-28T05:35:39.000Z",
     "type": "free",
-    "loggedIn": "true",
+    "suspended": null,
+    "linkRotNotifications": "true",
+    "linkMetricsReports": "true"
+}
+```
+
+### log in to an account
+
+`POST <baseUrl>/v1/login` expects and returns JSON objects
+
+```json
+{
+    "email": "arthur@dent.com",
+    "password": "87654321"
+}
+```
+
+sample response:
+
+```json
+{
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "id": 4,
+    "email": "arthur@dent.com",
+    "created": "2023-04-28T05:35:39.000Z",
+    "type": "free",
     "suspended": null,
     "linkRotNotifications": "true",
     "linkMetricsReports": "true"
@@ -220,7 +301,10 @@ sample request body:
 
 ```json
 {
-    "userId": 4,  // alternatively, you can use the "email" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4,
 
     "newEmail": "sandwich@shop.com",
     "newType": "free",
@@ -241,7 +325,10 @@ sample request body:
 
 ```json
 {
-    "userId": 4,  // alternatively, you can use the "email" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4,
     "newPassword": "87654321"
 }
 ```
@@ -256,6 +343,9 @@ sample request body:
 
 ```json
 {
-    "userId": 4  // alternatively, you can use the "email" attribute
+    "token": {
+        "user": "arthur@dent.com"
+    },
+    "userId": 4
 }
 ```

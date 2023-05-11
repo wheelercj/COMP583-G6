@@ -73,7 +73,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, email, hashedPassword, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    SELECT id, email, hashedPassword, created, type, suspended, linkRotNotifications, linkMetricsReports
                     FROM users
                     WHERE email = ?;
                 `,
@@ -93,7 +93,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, email, hashedPassword, created, type, loggedIn, suspended, linkRotNotifications, linkMetricsReports
+                    SELECT id, email, hashedPassword, created, type, suspended, linkRotNotifications, linkMetricsReports
                     FROM users
                     WHERE id = ?;
                 `,
@@ -136,7 +136,9 @@ export class DB {
     }
 
 
-    updateAccountById(userId, newEmail, newType, newLinkRotNotifications, newLinkMetricsReports) {
+    updateAccountById(
+        userId, newEmail, newType, newLinkRotNotifications, newLinkMetricsReports
+    ) {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
@@ -274,7 +276,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, userId
                     FROM urls
                     WHERE shortUrl = ?;
                 `,
@@ -294,7 +296,7 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, userId
                     FROM urls
                     WHERE id = ?;
                 `,
@@ -314,12 +316,52 @@ export class DB {
         return new Promise(function (resolve, reject) {
             connection.query(
                 `
-                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, rotted, userId
+                    SELECT id, originalUrl, shortUrl, created, deleted, disabled, userId
                     FROM urls
                     WHERE userId = ?;
                 `,
                 [
                     userId
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectUrlOwner(shortUrl) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT userId
+                    FROM urls
+                    WHERE shortUrl = ?;
+                `,
+                [
+                    shortUrl
+                ],
+                function (err, results, fields) {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
+        });
+    }
+
+
+    selectUrlOwnerByUrlId(urlId) {
+        return new Promise(function (resolve, reject) {
+            connection.query(
+                `
+                    SELECT userId
+                    FROM urls
+                    WHERE id = ?;
+                `,
+                [
+                    urlId
                 ],
                 function (err, results, fields) {
                     if (err) reject(err);
@@ -572,6 +614,8 @@ export class DB {
                         SELECT id
                         FROM urls
                         WHERE shortUrl = ?
+                            AND deleted IS NULL
+                            AND disabled IS NULL
                     )
                         AND created >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
                 `,

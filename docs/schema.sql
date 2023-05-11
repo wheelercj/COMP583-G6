@@ -15,7 +15,6 @@ CREATE TABLE users (
     hashedPassword VARCHAR(60) NOT NULL,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     type ENUM('free', 'premium', 'business', 'admin') NOT NULL,
-    loggedIn ENUM('true', 'false') NOT NULL DEFAULT 'false',
     suspended DATETIME,  -- if null, the user isnt suspended
     linkRotNotifications ENUM('true', 'false') NOT NULL DEFAULT 'true',
     linkMetricsReports ENUM('true', 'false') NOT NULL DEFAULT 'true'
@@ -28,7 +27,6 @@ CREATE TABLE urls (
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted DATETIME,  -- if null, the url has not been deleted. Only the urls owner can delete it.
     disabled DATETIME,  -- if null, the url has not been disabled. Only admins can disable urls.
-    rotted DATETIME,  -- if null, the url is not considered rotted
     userId BIGINT UNSIGNED,  -- if null, the user doesnt have an account
     FOREIGN KEY (userId) REFERENCES users(id)
 );
