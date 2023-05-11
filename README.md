@@ -13,9 +13,9 @@ Now just use the `nodemon` command to run the server! If you get an error messag
 
 ## resources
 
+* [API endpoints](https://github.com/wheelercj/COMP583-G6/blob/main/docs/routes.md)
+* [our database schema](https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql)
+* [how our web server was set up](https://github.com/wheelercj/COMP583-G6/blob/main/docs/server-setup.md)
 * [project Jira](https://mooshi.atlassian.net/jira/software/projects/CG/boards/1)
 * [project Google Drive](https://drive.google.com/drive/folders/1WSS3t4vA2GgMH0W6S3wUn9kD_YjLJNu4?usp=sharing)
 * [getting started with Git and GitHub](https://wheelercj.github.io/notes/pages/20210907144216.html)
-* [guide to using our functions in db.js](https://docs.google.com/document/d/1-0uuLQKpJv4AtIP_U9n10LBu-a518Mcoea7zqqDyym8)
-* [our database schema](https://github.com/wheelercj/COMP583-G6/blob/main/docs/schema.sql)
-* [how our web server was set up](https://github.com/wheelercj/COMP583-G6/blob/main/docs/server-setup.md)
