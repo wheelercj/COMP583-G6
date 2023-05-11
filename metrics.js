@@ -41,8 +41,8 @@ export async function createGraph(dailyClickCounts, dayNames) {
 
 /*
     Gets from the database a link's metrics from the last maxDays days (including
-    today). Requires either urlId or shortUrl. If both are given, uses urlId. If
-    unsuccessful, returns null.
+    today). If the short link does not exist, has been deleted or disabled, or has not
+    had any clicks within the last maxDays days, the metrics will be empty.
 
     Sample return value:
         {
@@ -82,17 +82,21 @@ export async function createGraph(dailyClickCounts, dayNames) {
             }
         }
 */
-export async function fetchMetrics(urlId, shortUrl, maxDays) {
-    let results;
-    if (urlId !== undefined) {
-        results = await db.selectClicks(urlId, maxDays);
-    } else if (shortUrl !== undefined) {
-        results = await db.selectClicksByShortUrl(shortUrl, maxDays);
-    } else {
-        throw new Error("urlId and shortUrl cannot both be undefined.");
+export async function fetchMetrics(shortUrl, maxDays) {
+    if (shortUrl === undefined || maxDays === undefined) {
+        throw new Error("shortUrl and maxDays are required");
     }
+    let results = await db.selectClicksByShortUrl(shortUrl, maxDays);
     if (results.length === 0) {
-        return null;
+        return {
+            locations: [],
+            clicks: {
+                dayNames: [],
+                dailyTotalCounts: [],
+                dailyUniqueCounts: [],
+                uniqueCount: 0,
+            }
+        };
     }
 
     let datetimes = [];

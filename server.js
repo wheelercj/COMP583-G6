@@ -8,7 +8,7 @@ import * as path from 'path';
 import { DB } from './db.js';
 import { router } from './routes/index.js';
 import { fetchMetrics, createGraph } from './metrics.js';
-import { isValidPassword } from './routes/v1/validators.js';
+import { isValidPassword, isValidUrl, validateToken } from './routes/v1/validators.js';
 
 const app = express();
 const db = new DB();
@@ -49,7 +49,7 @@ app.get("/:shortUrl", async function (req, res) {
 });
 
 
-// Returns the user's URLs if the user exists.
+// Returns the user's URLs.
 app.get("/v1/urls/:userId", async function (req, res) {
     if (req.params.userId === undefined) {
         res.status(400).send();
@@ -59,30 +59,23 @@ app.get("/v1/urls/:userId", async function (req, res) {
     if (results.length === 0) {
         res.status(404).send();
     } else {
-        res.json(results);
+        res.json({ urls: results });
     }
 });
 
 
 /*
-    Returns the URL's metrics if the URL exists.
-    Requires either urlId or shortUrl. If both are given, uses urlId.
+    Returns the URL's metrics. Returns empty metrics for URLs that do not exist, have
+    been deleted or disabled, or have not had any clicks within the last maxDays days.
 */
 app.get("/v1/metrics", async function (req, res) {
-    const { urlId, shortUrl, maxDays } = req.query;
-    if (urlId === undefined && shortUrl === undefined) {
-        res.status(400).send();
-        return;
-    }
-    if (maxDays === undefined) {
+    const { shortUrl, maxDays } = req.body;
+    if (shortUrl === undefined || maxDays === undefined) {
         res.status(400).send();
         return;
     }
 
-    const metrics = await fetchMetrics(urlId, shortUrl, maxDays);
-    if (!metrics) {
-        res.status(400).send();
-    }
+    const metrics = await fetchMetrics(shortUrl, maxDays);
     const graph = await createGraph(metrics.clicks.dailyTotalCounts, metrics.clicks.dayNames);
     if (graph) {
         res.json({
@@ -99,27 +92,24 @@ app.get("/v1/metrics", async function (req, res) {
 
 /*
     Edits where a short URL redirects to.
-    Requires either urlId or shortUrl. If both are given, uses urlId.
 */
 app.patch("/v1/redirect", async function (req, res) {
-    const { urlId, shortUrl, newRedirect } = req.body;
-    if (newRedirect === undefined) {
+    const { token, userId, shortUrl, newRedirect } = req.body;
+    if (
+        shortUrl === undefined
+        || newRedirect === undefined
+        || !isValidUrl(newRedirect)
+    ) {
         res.status(400).send();
         return;
     }
+    let user = await validateToken(token, userId, res);
+    if (user === undefined) {
+        return;
+    }
 
-    if (urlId !== undefined) {
-        if (await db.updateOriginalUrlById(urlId, newRedirect)) {
-            res.status(204).send();
-        } else {
-            res.status(400).send();
-        }
-    } else if (shortUrl !== undefined) {
-        if (await db.updateOriginalUrl(shortUrl, newRedirect)) {
-            res.status(204).send();
-        } else {
-            res.status(400).send();
-        }
+    if (await db.updateOriginalUrl(shortUrl, newRedirect)) {
+        res.status(204).send();
     } else {
         res.status(400).send();
     }
@@ -127,29 +117,48 @@ app.patch("/v1/redirect", async function (req, res) {
 
 
 /*
-    Change's an accounts password. Requires either userId or email. If both are given,
-    uses userId. Requires newPassword.
+    Logs in to an account.
 */
-app.patch("/v1/changePassword", async function (req, res) {
-    const { userId, email, newPassword } = req.body;
-    if (newPassword === undefined || !isValidPassword(newPassword)) {
+app.post("/v1/login", async function (req, res) {
+    const { email, password } = req.body;
+    if (email === undefined || password === undefined) {
         res.status(400).send();
         return;
     }
 
+    const accounts = await db.selectAccount(email);
+    if (accounts.length === 0) {
+        res.status(404).send();
+    } else {
+        let account = accounts[0];
+        if (await bcrypt.compare(password, account.hashedPassword)) {
+            delete account.hashedPassword;
+            account.token = { user: account.email };
+            res.json(account);
+        } else {
+            res.status(401).send();
+        }
+    }
+});
+
+
+/*
+    Change's an accounts password.
+*/
+app.patch("/v1/changePassword", async function (req, res) {
+    const { token, userId, newPassword } = req.body;
+    if (!isValidPassword(newPassword)) {
+        res.status(400).send();
+        return;
+    }
+    let user = await validateToken(token, userId, res);
+    if (user === undefined) {
+        return;
+    }
+
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
-    if (userId !== undefined) {
-        if (await db.updateAccountPasswordById(userId, newHashedPassword)) {
-            res.status(204).send();
-        } else {
-            res.status(400).send();
-        }
-    } else if (email !== undefined) {
-        if (await db.updateAccountPassword(email, newHashedPassword)) {
-            res.status(204).send();
-        } else {
-            res.status(400).send();
-        }
+    if (await db.updateAccountPasswordById(userId, newHashedPassword)) {
+        res.status(204).send();
     } else {
         res.status(400).send();
     }
