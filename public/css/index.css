@@ -1,12 +1,13 @@
 /*
 Programmer Name: Miroo Yum
 */
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
 .container {
     flex-direction: column;
     align-items: center;
@@ -18,37 +19,40 @@ Programmer Name: Miroo Yum
     padding: 5%;
     display: flex;
     justify-content: center;
-  }
-.header{
+}
+
+.header {
     background: rgb(208, 218, 236);
     padding: 10px;
     text-align: right;
 }
 
-.header button{
+.header button {
     background: transparent;
-    border-color:  rgb(0, 0, 0);
+    border-color: rgb(0, 0, 0);
     padding: 5px 10px;
     font-size: 17px;
 }
 
-.Logo{
-    margin-bottom: 50px;
+.Logo {
+    margin-top: 33px;
+    margin-bottom: 30px;
 }
 
-.searchbar{
-    margin-bottom: 50px;
+.searchbar {
+    min-width: 550px;
+    margin-bottom: 10px;
     width: 80%;
     max-width: 700px;
-    background:mediumpurple ;
+    background: mediumpurple;
     display: flex;
     align-items: center;
     border-radius: 60px;
-    padding: 10px 20px;
+    padding: 0px 20px;
     backdrop-filter: blur(4px) saturate(180%);
 }
 
-.searchbar input{
+.searchbar input {
     background: transparent;
     flex: 1;
     border: 0;
@@ -57,23 +61,85 @@ Programmer Name: Miroo Yum
     font-size: 20px;
     color: white;
 }
-::placeholder{
+
+::placeholder {
     color: thistle;
 }
 
-.searchbar button img{
-    width: 60px;
+.searchbar button img {
+    width: 50px;
     border-radius: 50%;
 }
 
-.searchbar button:hover{
-    background-color:black;
+.searchbar button:hover {
+    background-color: black;
 }
-.searchbar button{
+
+.searchbar button {
     border: 0;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background: navajowhite;
     cursor: pointer;
+}
+
+.customInput {
+    min-width: 550px;
+    /* max-width: 460px; */
+    margin-bottom: 10px;
+    width: 80%;
+    max-width: 700px;
+    background: mediumpurple;
+    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    padding: 10px 40px;
+    backdrop-filter: blur(4px) saturate(180%);
+}
+
+.customInput input {
+    height: 30px;
+    width: 500px;
+}
+
+.customBtn {
+    background-color: mediumpurple;
+    border-color: white(0, 0, 0);
+    border-radius: 40%;
+    padding: 5px 10px;
+    font-size: 15px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.og_link {
+    padding-left: 10px;
+    background-color: mediumpurple;
+    border: black;
+    float: left;
+    min-width: 200px;
+    width: 420px;
+    margin-bottom: 2px;
+    color: whitesmoke;
+}
+
+.created_msg {
+    height: 0;
+    background-color: mediumpurple;
+    display: flex;
+    overflow: hidden;
+    color: whitesmoke;
+    width: 420px;
+}
+
+.created_link {
+    margin-left: 10px;
+    float: right;
+}
+
+.created_msg img {
+    width: 50px;
+    border-radius: 50%;
 }

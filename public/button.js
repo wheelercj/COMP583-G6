@@ -18,3 +18,8 @@ const loginBtn = document.getElementById("login-btn");
 loginBtn.addEventListener("click", function() {
   window.location.href = "/public/login.html";
 });
+
+const customUrlBtn = document.getElementById("custom-url-btn");
+customUrlBtn.addEventListener("click", function() {
+  window.location.href = "/public/custom-url.html";
+});

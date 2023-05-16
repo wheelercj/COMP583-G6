@@ -1,23 +1,17 @@
-<!--
-Programmer Name: Miroo Yum
--->
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MakeMeShort Homepage</title>
   <link rel="stylesheet" href="/public/css/index.css">
-  </link>
-  <!-- <script src="/COMP583-G6/public/js/button.js"></script> -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-
   <div class="header">
     <button id="about-btn">About</button>
     <button id="upgrade-btn">Pricing</button>
     <button id="login-btn">Log In</button>
     <button id="infos-btn">Info</button>
+    <button id="custom-url-btn">Custom URL</button>
     <script src="/public/button.js"></script>
   </div>
 
@@ -45,14 +39,12 @@ Programmer Name: Miroo Yum
           '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
           '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
           '(\\#[-a-z\\d_=.]*)?$', 'i'); // validate fragment locator
-        return urlPattern.test(urlString);
+        return !!urlPattern.test(urlString);
       }
 
       function return_ShortURL() {
         if (!isValidUrl(searchbar_inputfield.value)) {
           return_OGURL_p.innerHTML = searchbar_inputfield.value + " is not valid";
-          // searchbar_inputfield.value = "";
-          // document.getElementById("searchbar")[0].placeholder = "Original Link here";
         }
         else {
           postUrl(searchbar_inputfield.value).then((data) => {
@@ -60,8 +52,6 @@ Programmer Name: Miroo Yum
           }).catch((error) => {
             console.log(error);
           });
-          // searchbar_inputfield.value = "";
-          // document.getElementById("searchbar")[0].placeholder = "Original Link here";
         }
         searchbar_inputfield.value = "";
         document.getElementById("searchbar")[0].placeholder = "Original Link here";
