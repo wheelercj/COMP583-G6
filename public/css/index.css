@@ -34,6 +34,32 @@ Programmer Name: Miroo Yum
     font-size: 17px;
 }
 
+header {
+    background: rgb(112, 148, 214);
+    padding: 10px;
+    text-align: right;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+nav a:hover {
+    color: #e70808;
+}
+
 .Logo {
     margin-top: 33px;
     margin-bottom: 30px;
