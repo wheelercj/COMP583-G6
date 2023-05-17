@@ -15,7 +15,7 @@ const db = new DB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');  // https://blog.logrocket.com/top-express-js-template-engines-for-dynamic-html-pages/
 app.set('trust proxy', true);  // required for req.ip to work properly if using a proxy
 app.use(express.json());
