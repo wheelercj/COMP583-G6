@@ -15,6 +15,8 @@ const db = new DB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.set('views', './views');
+app.set('view engine', 'ejs');  // https://blog.logrocket.com/top-express-js-template-engines-for-dynamic-html-pages/
 app.set('trust proxy', true);  // required for req.ip to work properly if using a proxy
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, "public")));
@@ -61,6 +63,35 @@ app.get("/v1/urls/:userId", async function (req, res) {
     } else {
         res.json({ urls: results });
     }
+});
+
+
+/*
+    Sends the user to a page showing a URL's metrics.
+*/
+app.get("/metrics/:shortUrl", async function (req, res) {
+    const shortUrl = req.params.shortUrl;
+    if (shortUrl === undefined) {
+        res.status(400).send();
+        return;
+    }
+    const url = await db.selectUrl(shortUrl);
+    if (url.length === 0) {
+        res.status(404).send();
+        return;
+    }
+    const originalUrl = url[0].originalUrl;
+    const metrics = await fetchMetrics(shortUrl, 7);
+    const graph = await createGraph(metrics.clicks.dailyTotalCounts, metrics.clicks.dayNames);
+    if (graph == null) {
+        res.status(400).send();
+        return;
+    }
+    const graphImage = '<img src="data:image/png;base64,' + Buffer.from(graph).toString('base64') + '" />';
+    const locations = metrics.locations;
+    const clicks = metrics.clicks.dailyTotalCounts.reduce((a, b) => a + b, 0);
+    const uniqueVisitors = metrics.clicks.uniqueCount;
+    res.render('metrics', { graphImage, locations, clicks, uniqueVisitors, shortUrl, originalUrl });
 });
 
 

@@ -618,6 +618,7 @@ export class DB {
                             AND disabled IS NULL
                     )
                         AND created >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+                        ORDER BY created ASC;
                 `,
                 [
                     shortUrl,
