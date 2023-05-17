@@ -1,0 +1,29 @@
+import loggedIn from "../controllers/loggedIn.js";
+import logout from "../controllers/logout.js";
+import express from "express";
+
+const router = express.Router();
+
+router.get("/", loggedIn, (req, res) => {
+  if (req.user) {
+    res.render("index", { status: "loggedIn", user: req.user });
+  } else {
+    res.render("index", { status: "no", user: "nothing" });
+  }
+});
+
+router.get("/register", (req, res) => {
+  res.sendFile("register.html", { root: "./public" });
+});
+
+router.get("/login", (req, res) => {
+  res.sendFile("login.html", { root: "./public" });
+});
+
+router.get("/homepage", (req, res) => {
+    res.sendFile("homepage.html", { root: "./public" });
+  });
+
+router.get("/logout", logout);
+
+export default router;
