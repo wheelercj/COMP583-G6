@@ -21,7 +21,7 @@
 
   <div style="margin: 20px;">
     <h1>Link Metrics</h1>
-    <p>over the last 14 days</p>
+    <p>over the last 7 days</p>
     <div class="customInput">
       https://makemeshort.buzz/
       <input id="shortUrlInput" type="text" value="<%= shortUrl %>" />
@@ -42,7 +42,7 @@
         <br />
         <p>locations:</p>
         <% for (let i = 0; i < locations.length; i++) { %>
-          <p><%= locations[i].percent %> from <%= locations[i].region %>, <%= locations[i].country %></p>
+          <p><%= Math.round(locations[i].percent * 100) %>% from <%= locations[i].region %>, <%= locations[i].country %></p>
         <% } %>
       </div>
     </div>
