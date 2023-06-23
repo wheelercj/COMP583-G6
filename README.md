@@ -2,6 +2,8 @@
 
 Making links easy to share.
 
+[makemeshort.buzz](https://makemeshort.buzz/)
+
 ## dev environment setup
 
 1. Navigate in a terminal to where you want the project's folder to appear.
