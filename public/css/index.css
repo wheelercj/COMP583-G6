@@ -53,22 +53,17 @@ nav a:hover {
     margin-bottom: 10px;
     width: 80%;
     max-width: 700px;
-    background: mediumpurple;
     display: flex;
     align-items: center;
     border-radius: 60px;
+    border-color: black;
     padding: 0px 20px;
-    backdrop-filter: blur(4px) saturate(180%);
 }
 
 .searchbar input {
-    background: transparent;
     flex: 1;
-    border: 0;
-    outline: none;
     padding: 24px 20px;
     font-size: 20px;
-    color: white;
 }
 
 ::placeholder {
