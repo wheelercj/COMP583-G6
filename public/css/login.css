@@ -1,6 +1,3 @@
-/*
-Programmer Name: Jong Won Lim
-*/    
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -18,7 +15,6 @@ body {
 header {
 	background-color: rgb(194, 210, 240);
 	padding: 10px;
-	text-align: right;
 }
 
 nav ul {

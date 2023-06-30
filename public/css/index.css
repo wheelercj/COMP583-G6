@@ -1,6 +1,3 @@
-/*
-Programmer Name: Miroo Yum
-*/
 * {
     margin: 0;
     padding: 0;
@@ -21,23 +18,9 @@ Programmer Name: Miroo Yum
     justify-content: center;
 }
 
-.header {
-    background: rgb(208, 218, 236);
-    padding: 10px;
-    text-align: right;
-}
-
-.header button {
-    background: transparent;
-    border-color: rgb(0, 0, 0);
-    padding: 5px 10px;
-    font-size: 17px;
-}
-
 header {
     background: rgb(112, 148, 214);
     padding: 10px;
-    text-align: right;
 }
 
 nav ul {
