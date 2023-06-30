@@ -1,6 +1,8 @@
 import { config } from 'dotenv';
 config();  // Loads env vars from the `.env` file into the `process.env` object.
 import express from "express";
+import * as faviconModule from 'serve-favicon';
+const favicon = faviconModule.default;
 import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -15,6 +17,7 @@ const db = new DB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');  // https://blog.logrocket.com/top-express-js-template-engines-for-dynamic-html-pages/
 app.set('trust proxy', true);  // required for req.ip to work properly if using a proxy
