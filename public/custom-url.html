@@ -27,14 +27,14 @@
       </div>
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
         <input id="searchbar_inputfield" type="text" placeholder="Original Link here">
-        <button onclick="return_ShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
+        <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <div>
-        <p id="return_OGURL_p"></p>
+        <p id="result"></p>
         <p id="return_extvalid_p"></p>
       </div>
       <div class="customInput">https://makemeshort.buzz/ <input id="custom_ext" type="text"> </div>
-      <button class="customBtn" id="customBtn" onclick="return_CustomURL()">Make Custom Short Link</button>
+      <button class="customBtn" id="customBtn" onclick="createCustomURL()">Make Custom Short Link</button>
       <div class="og_link">
         <p id="og_link"></p>
       </div>
@@ -52,7 +52,7 @@
         src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
         const createURLBtn = document.getElementById("createURL_btn");
-        const return_OGURL_p = document.getElementById("return_OGURL_p");
+        const result = document.getElementById("result");
         const searchbar_inputfield = document.getElementById("searchbar_inputfield");
         const custom_ext = document.getElementById("custom_ext");
         const return_extvalid_p = document.getElementById("return_extvalid_p")
@@ -69,14 +69,14 @@
           return !!urlPattern.test(urlString);
         }
 
-        function return_ShortURL() {
+        function createShortURL() {
           if (!isValidUrl(searchbar_inputfield.value)) {
-            return_OGURL_p.innerHTML = searchbar_inputfield.value + " is not valid";
+            result.innerHTML = searchbar_inputfield.value + " is not valid";
             document.getElementById("created_msg").style.height = 0
           }
           else {
             postGuestUrl(searchbar_inputfield.value).then((data) => {
-              return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
+              result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
@@ -105,10 +105,10 @@
           }
         }
 
-        function return_CustomURL() {
+        function createCustomURL() {
           if (!isValidUrl(searchbar_inputfield.value) || !isValidShortUrl(custom_ext.value)) {
             if (!isValidUrl(searchbar_inputfield.value)) {
-              return_OGURL_p.innerHTML = "Not a valid URL: \" " + searchbar_inputfield.value + "\"";
+              result.innerHTML = "Not a valid URL: \" " + searchbar_inputfield.value + "\"";
               searchbar_inputfield.value = "";
               document.getElementById("created_msg").style.height = 0
               og_link_p.style.height = 0
@@ -124,7 +124,7 @@
           }
           else {
             postCustomGuestUrl(searchbar_inputfield.value, custom_ext.value).then((data) => {
-              return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
+              result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
@@ -140,6 +140,7 @@
           custom_ext.value = ""
           document.getElementById("searchbar")[0].placeholder = "Original Link here";
         }
+
         function isValidShortUrl(shortUrl) {
           return (
             shortUrl !== undefined

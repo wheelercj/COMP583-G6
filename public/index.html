@@ -27,16 +27,16 @@
       </div>
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
         <input id="searchbar_inputfield" type="text" placeholder="Original Link here">
-        <button onclick="return_ShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
+        <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
-      <p id="return_OGURL_p"></p>
+      <p id="result"></p>
       <p id="returnURL_p"></p>
 
       <script>
         src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
         const createURLBtn = document.getElementById("createURL_btn");
-        const return_OGURL_p = document.getElementById("return_OGURL_p");
+        const result = document.getElementById("result");
         const searchbar_inputfield = document.getElementById("searchbar_inputfield");
         const isValidUrl = urlString => {
           var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
@@ -48,13 +48,13 @@
           return !!urlPattern.test(urlString);
         }
 
-        function return_ShortURL() {
+        function createShortURL() {
           if (!isValidUrl(searchbar_inputfield.value)) {
-            return_OGURL_p.innerHTML = searchbar_inputfield.value + " is not valid";
+            result.innerHTML = searchbar_inputfield.value + " is not valid";
           }
           else {
             postUrl(searchbar_inputfield.value).then((data) => {
-              return_OGURL_p.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
+              result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
