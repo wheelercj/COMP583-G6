@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Link Metrics</title>
-  <link rel="stylesheet" href="/public/css/index.css">
-  <link rel="stylesheet" href="/public/css/metrics.css">
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
 
-<body>
-  <header>
-    <img src="/public/images/icons8-link-100.png" style="text-align: left;" />
-    <nav style="text-align: right;">
-      <ul>
-        <li><a href="/public/index.html">Home</a></li>
-        <li><a href="/public/about.html">About</a></li>
-        <li><a href="/public/custom-url.html">Custom URL</a></li>
-        <li><a href="/public/metrics.html">Metrics</a></li>
-      </ul>
-    </nav>
-  </header>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Metrics</title>
+    <link rel="stylesheet" href="/public/css/index.css">
+    <link rel="stylesheet" href="/public/css/metrics.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
 
-  <div style="margin: 20px;">
-    <h1>Link Metrics</h1>
-    <p>over the last 7 days</p>
-    <div class="customInput">
-      https://makemeshort.buzz/
-      <input id="shortUrlInput" type="text" />
-      <input id="shortUrlSubmitButton" type="button" value="Submit" style="margin: 8px; width: auto; padding: 5px;"/>
+  <body>
+    <header>
+      <img src="/public/images/icons8-link-100.png" style="text-align: left;" />
+      <nav style="text-align: right;">
+        <ul>
+          <li><a href="/public/index.html">Home</a></li>
+          <li><a href="/public/about.html">About</a></li>
+          <li><a href="/public/custom-url.html">Custom URL</a></li>
+          <li><a href="/public/metrics.html">Metrics</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div style="margin: 20px;">
+      <h1>Link Metrics</h1>
+      <p>over the last 7 days</p>
+      <div class="customInput">
+        https://makemeshort.buzz/
+        <input id="shortUrlInput" type="text" />
+        <input id="shortUrlSubmitButton" type="button" value="Submit" style="margin: 8px; width: auto; padding: 5px;" />
+      </div>
     </div>
-  </div>
 
-  <footer>
-    <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-  </footer>
+    <footer>
+      <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank"
+        href="https://icons8.com">Icons8</a>
+    </footer>
 
-  <script>
-    const shortUrlInput = document.getElementById('shortUrlInput');
-    const shortUrlSubmitButton = document.getElementById('shortUrlSubmitButton');
+    <script>
+      const shortUrlInput = document.getElementById('shortUrlInput');
+      const shortUrlSubmitButton = document.getElementById('shortUrlSubmitButton');
 
-    shortUrlSubmitButton.addEventListener('click', () => {
-      const shortUrl = shortUrlInput.value;
-      window.location.href = `/metrics/${shortUrl}`;
-    });
-    shortUrlInput.addEventListener('keyup', (event) => {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        shortUrlSubmitButton.click();
-      }
-    });
-  </script>
-</body>
+      shortUrlSubmitButton.addEventListener('click', () => {
+        const shortUrl = shortUrlInput.value;
+        window.location.href = `/metrics/${shortUrl}`;
+      });
+      shortUrlInput.addEventListener('keyup', (event) => {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          shortUrlSubmitButton.click();
+        }
+      });
+    </script>
+  </body>
 
 </html>

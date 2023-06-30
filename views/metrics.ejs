@@ -1,69 +1,76 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Link Metrics</title>
-  <link rel="stylesheet" href="/public/css/index.css">
-  <link rel="stylesheet" href="/public/css/metrics.css">
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
 
-<body>
-  <header>
-    <img src="/public/images/icons8-link-100.png" style="text-align: left;" />
-    <nav style="text-align: right;">
-      <ul>
-        <li><a href="/public/index.html">Home</a></li>
-        <li><a href="/public/about.html">About</a></li>
-        <li><a href="/public/custom-url.html">Custom URL</a></li>
-      </ul>
-    </nav>
-  </header>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Metrics</title>
+    <link rel="stylesheet" href="/public/css/index.css">
+    <link rel="stylesheet" href="/public/css/metrics.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
 
-  <div style="margin: 20px;">
-    <h1>Link Metrics</h1>
-    <p>over the last 7 days</p>
-    <div class="customInput">
-      https://makemeshort.buzz/
-      <input id="shortUrlInput" type="text" value="<%= shortUrl %>" />
-      <input id="shortUrlSubmitButton" type="button" value="Submit" style="margin: 8px; width: auto; padding: 5px;"/>
-    </div>
-    <p>redirects to: <%= originalUrl %></p>
+  <body>
+    <header>
+      <img src="/public/images/icons8-link-100.png" style="text-align: left;" />
+      <nav style="text-align: right;">
+        <ul>
+          <li><a href="/public/index.html">Home</a></li>
+          <li><a href="/public/about.html">About</a></li>
+          <li><a href="/public/custom-url.html">Custom URL</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <div id="all-columns">
-
-      <div id="column1">
-        <br />
-        <%- graphImage %>
+    <div style="margin: 20px;">
+      <h1>Link Metrics</h1>
+      <p>over the last 7 days</p>
+      <div class="customInput">
+        https://makemeshort.buzz/
+        <input id="shortUrlInput" type="text" value="<%= shortUrl %>" />
+        <input id="shortUrlSubmitButton" type="button" value="Submit" style="margin: 8px; width: auto; padding: 5px;" />
       </div>
+      <p>redirects to: <%= originalUrl %>
+      </p>
 
-      <div id="column2">
-        <p>total clicks: <%= clicks %></p>
-        <p>unique visitors: <%= uniqueVisitors %></p>
-        <br />
-        <p>locations:</p>
-        <% for (let i = 0; i < locations.length; i++) { %>
-          <p><%= Math.round(locations[i].percent * 100) %>% from <%= locations[i].region %>, <%= locations[i].country %></p>
-        <% } %>
+      <div id="all-columns">
+
+        <div id="column1">
+          <br />
+          <%- graphImage %>
+        </div>
+
+        <div id="column2">
+          <p>total clicks: <%= clicks %>
+          </p>
+          <p>unique visitors: <%= uniqueVisitors %>
+          </p>
+          <br />
+          <p>locations:</p>
+          <% for (let i=0; i < locations.length; i++) { %>
+            <p>
+              <%= Math.round(locations[i].percent * 100) %>% from <%= locations[i].region %>, <%= locations[i].country
+                    %>
+            </p>
+            <% } %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    const shortUrlInput = document.getElementById('shortUrlInput');
-    const shortUrlSubmitButton = document.getElementById('shortUrlSubmitButton');
+    <script>
+      const shortUrlInput = document.getElementById('shortUrlInput');
+      const shortUrlSubmitButton = document.getElementById('shortUrlSubmitButton');
 
-    shortUrlSubmitButton.addEventListener('click', () => {
-      const shortUrl = shortUrlInput.value;
-      window.location.href = `/v1/metrics/${shortUrl}`;
-    });
-    shortUrlInput.addEventListener('keyup', (event) => {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        shortUrlSubmitButton.click();
-      }
-    });
-  </script>
-</body>
+      shortUrlSubmitButton.addEventListener('click', () => {
+        const shortUrl = shortUrlInput.value;
+        window.location.href = `/v1/metrics/${shortUrl}`;
+      });
+      shortUrlInput.addEventListener('keyup', (event) => {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          shortUrlSubmitButton.click();
+        }
+      });
+    </script>
+  </body>
 
 </html>
