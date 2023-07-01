@@ -1,3 +1,8 @@
+html {
+    /* Background gradient MIT licensed: https://www.makeuseof.com/css-background-gradients/ */
+    background-image: linear-gradient(to left, #8360c3, #2e9bbf);
+}
+
 header {
     margin: 20px;
 }
@@ -8,6 +13,10 @@ footer {
     bottom: 4%;
     left: 0;
     right: 0;
+}
+
+footer a {
+    color: black;
 }
 
 nav {
