@@ -24,7 +24,7 @@
 
     <div class="container">
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
-        <input id="searchbar_inputfield" type="text" placeholder="Original Link here">
+        <input id="searchbar_inputfield" type="text" placeholder="Paste a long link here">
         <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <div>
@@ -80,7 +80,7 @@
             });
           }
           searchbar_inputfield.value = "";
-          document.getElementById("searchbar")[0].placeholder = "Original Link here";
+          document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
           og_link_p.style.height = 0
           og_link_p.style.paddingBottom = 0
           document.getElementById("created_msg").style.height = 0
@@ -136,7 +136,7 @@
           }
           searchbar_inputfield.value = "";
           custom_ext.value = ""
-          document.getElementById("searchbar")[0].placeholder = "Original Link here";
+          document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
         }
 
         function isValidShortUrl(shortUrl) {

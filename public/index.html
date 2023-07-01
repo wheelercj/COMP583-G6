@@ -24,7 +24,7 @@
 
     <div class="container">
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
-        <input id="searchbar_inputfield" type="text" placeholder="Original Link here">
+        <input id="searchbar_inputfield" type="text" placeholder="Paste a long link here">
         <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <p id="result"></p>
@@ -58,7 +58,7 @@
             });
           }
           searchbar_inputfield.value = "";
-          document.getElementById("searchbar")[0].placeholder = "Original Link here";
+          document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
         }
 
         async function postUrl(originalUrl, userId) {
