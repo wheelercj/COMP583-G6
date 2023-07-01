@@ -11,31 +11,6 @@ body {
     background-position: center;
 }
 
-header {
-    background-color: rgb(194, 210, 240);
-    padding: 10px;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #333;
-}
-
-nav a:hover {
-    color: #e70808;
-}
-
 .container {
     display: flex;
     flex-direction: column;

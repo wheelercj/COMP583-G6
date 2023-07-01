@@ -10,32 +10,6 @@ body {
     color: #333;
 }
 
-header {
-    background: rgb(112, 148, 214);
-    padding: 10px;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #333;
-}
-
-nav a:hover {
-    color: #e70808;
-}
-
-/* Style the main section */
 main {
     max-width: 800px;
     margin: 0 auto;
