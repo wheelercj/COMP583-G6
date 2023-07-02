@@ -46,6 +46,10 @@ nav a:hover {
     color: #325dc8;
 }
 
+input {
+    border-radius: 15px;
+}
+
 input::placeholder {
     color: #404040;
 }
