@@ -35,6 +35,7 @@
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
         const result = document.getElementById("result");
         const longLinkInput = document.getElementById("longLinkInput");
+        longLinkInput.focus();
         const isValidUrl = urlString => {
           var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
