@@ -25,7 +25,7 @@
 
     <div class="container">
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
-        <input id="searchbar_inputfield" type="text" placeholder="Paste a long link here">
+        <input id="longLinkInput" type="text" placeholder="Paste a long link here">
         <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <div>
@@ -51,7 +51,7 @@
         src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
         const result = document.getElementById("result");
-        const searchbar_inputfield = document.getElementById("searchbar_inputfield");
+        const longLinkInput = document.getElementById("longLinkInput");
         const custom_ext = document.getElementById("custom_ext");
         const return_extvalid_p = document.getElementById("return_extvalid_p")
         const og_link_p = document.getElementById("og_link")
@@ -68,18 +68,18 @@
         }
 
         function createShortURL() {
-          if (!isValidUrl(searchbar_inputfield.value)) {
-            result.innerHTML = searchbar_inputfield.value + " is not valid";
+          if (!isValidUrl(longLinkInput.value)) {
+            result.innerHTML = longLinkInput.value + " is not valid";
             document.getElementById("created_msg").style.height = 0
           }
           else {
-            postGuestUrl(searchbar_inputfield.value).then((data) => {
+            postGuestUrl(longLinkInput.value).then((data) => {
               result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
           }
-          searchbar_inputfield.value = "";
+          longLinkInput.value = "";
           document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
           og_link_p.style.height = 0
           og_link_p.style.paddingBottom = 0
@@ -104,10 +104,10 @@
         }
 
         function createCustomURL() {
-          if (!isValidUrl(searchbar_inputfield.value) || !isValidShortUrl(custom_ext.value)) {
-            if (!isValidUrl(searchbar_inputfield.value)) {
-              result.innerHTML = "Not a valid URL: \" " + searchbar_inputfield.value + "\"";
-              searchbar_inputfield.value = "";
+          if (!isValidUrl(longLinkInput.value) || !isValidShortUrl(custom_ext.value)) {
+            if (!isValidUrl(longLinkInput.value)) {
+              result.innerHTML = "Not a valid URL: \" " + longLinkInput.value + "\"";
+              longLinkInput.value = "";
               document.getElementById("created_msg").style.height = 0
               og_link_p.style.height = 0
               og_link_p.style.paddingBottom = 0
@@ -121,12 +121,12 @@
             }
           }
           else {
-            postCustomGuestUrl(searchbar_inputfield.value, custom_ext.value).then((data) => {
+            postCustomGuestUrl(longLinkInput.value, custom_ext.value).then((data) => {
               result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
-            og_link_p.innerHTML = searchbar_inputfield.value
+            og_link_p.innerHTML = longLinkInput.value
             og_link_p.style.paddingBottom = "7px"
 
             return_link_p.innerHTML = "https://makemeshort.buzz/" + custom_ext.value
@@ -134,7 +134,7 @@
             document.getElementById("created_msg").style.height = "auto"
             og_link_p.style.height = "auto"
           }
-          searchbar_inputfield.value = "";
+          longLinkInput.value = "";
           custom_ext.value = ""
           document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
         }

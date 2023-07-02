@@ -25,7 +25,7 @@
 
     <div class="container">
       <form action="" class="searchbar" id="searchbar" onsubmit="return false">
-        <input id="searchbar_inputfield" type="text" placeholder="Paste a long link here">
+        <input id="longLinkInput" type="text" placeholder="Paste a long link here">
         <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <p id="result"></p>
@@ -34,7 +34,7 @@
         src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
         const result = document.getElementById("result");
-        const searchbar_inputfield = document.getElementById("searchbar_inputfield");
+        const longLinkInput = document.getElementById("longLinkInput");
         const isValidUrl = urlString => {
           var urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
@@ -46,17 +46,17 @@
         }
 
         function createShortURL() {
-          if (!isValidUrl(searchbar_inputfield.value)) {
-            result.innerHTML = searchbar_inputfield.value + " is not valid";
+          if (!isValidUrl(longLinkInput.value)) {
+            result.innerHTML = longLinkInput.value + " is not valid";
           }
           else {
-            postUrl(searchbar_inputfield.value).then((data) => {
+            postUrl(longLinkInput.value).then((data) => {
               result.innerHTML = `<a href="https://makemeshort.buzz/${data}">https://makemeshort.buzz/${data}</a>`;
             }).catch((error) => {
               console.log(error);
             });
           }
-          searchbar_inputfield.value = "";
+          longLinkInput.value = "";
           document.getElementById("searchbar")[0].placeholder = "Paste a long link here";
         }
 
