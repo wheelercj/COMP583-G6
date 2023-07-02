@@ -29,12 +29,10 @@
         <button onclick="createShortURL()"><img src="/public/images/search_icon.png" alt=""></button>
       </form>
       <p id="result"></p>
-      <p id="returnURL_p"></p>
 
       <script>
         src = "https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"
         const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
-        const createURLBtn = document.getElementById("createURL_btn");
         const result = document.getElementById("result");
         const searchbar_inputfield = document.getElementById("searchbar_inputfield");
         const isValidUrl = urlString => {
