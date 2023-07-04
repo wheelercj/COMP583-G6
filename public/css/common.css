@@ -1,6 +1,19 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 html {
     /* Background gradient MIT licensed: https://www.makeuseof.com/css-background-gradients/ */
     background-image: linear-gradient(to left, #8360c3, #2e9bbf);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -9,8 +22,8 @@ header {
 
 footer {
     text-align: center;
-    position: absolute;
-    bottom: 4%;
+    position: relative;
+    bottom: 1%;
     left: 0;
     right: 0;
 }
@@ -46,10 +59,25 @@ nav a:hover {
     color: #325dc8;
 }
 
+main {
+    flex-grow: 1;
+}
+
 input {
     border-radius: 15px;
 }
 
 input::placeholder {
     color: #404040;
+}
+
+/* mobile screen sizes */
+@media only screen and (max-width: 600px) {
+    nav {
+        float: none;
+        text-align: center;
+    }
+    nav li {
+        display: block;
+    }
 }
