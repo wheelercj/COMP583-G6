@@ -31,6 +31,11 @@
     border-radius: 10px;
 }
 
+#submit:hover {
+    background-color: #0d7e1a;
+    cursor: pointer;
+}
+
 #linkForm button:hover {
     background-color: #325dc8;
     cursor: pointer;
