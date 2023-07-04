@@ -24,7 +24,7 @@ function validateShortUrl() {
         return true;
     } else {
         shortLinkInput.style.border = "2px solid red";
-        shortLinkError.innerHTML = "The custom link can be empty or contain only letters, numbers, underscores, and/or dashes.";
+        shortLinkError.innerHTML = "The custom link can be empty or contain only letters, numbers, underscores, and/or dashes. It must be 30 characters or less.";
         shortLinkError.style.height = "auto";
         return false;
     }
