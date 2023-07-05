@@ -1,6 +1,6 @@
 # MakeMeShort
 
-Making links easy to share.
+Make links easier to share, and see clickthrough rates and approximate geographic locations of clicks.
 
 [makemeshort.buzz](https://makemeshort.buzz/)
 
