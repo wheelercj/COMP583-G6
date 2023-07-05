@@ -1,0 +1,49 @@
+#resultsWrapper {
+    width: 20%;
+    padding: 2%;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: snow;
+}
+
+#results {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+#results p {
+    font-size: large;
+}
+
+#results input {
+    background-color: snow;
+    flex-grow: 1;
+}
+
+input:focus {
+    outline: none;
+}
+
+#shortLinkWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#copyButton {
+    margin-left: 10px;
+}
+
+#qrCode {
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 1080px) {
+    #resultsWrapper {
+        width: auto;
+    }
+}

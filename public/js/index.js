@@ -12,7 +12,7 @@ shortLinkInput.onkeyup = () => {
 linkForm.onsubmit = (event) => {
     event.preventDefault();
     if (validateShortUrl() && longLinkInput.value.length > 0) {
-        createShortUrl();
+        createShortLink(longLinkInput.value, shortLinkInput.value);
     }
 };
 
@@ -30,38 +30,25 @@ function validateShortUrl() {
     }
 }
 
-function createShortUrl() {
-    // TODO
-    // if (validInput) {
-    //   // TODO: give the possibly empty short link to the postUrl function.
-    //   postUrl(longLinkInput.value).then((data) => {
-    //     // TODO: display the short URL and a QR code on a new page.
-    //     `<a href="https://makemeshort.buzz/${data}">makemeshort.buzz/${data}</a>`;
-    //     longLinkInput.value = "";
-    //     shortLinkInput.value = "";
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
-    // }
+function createShortLink(longLink, optionalShortLink) {
+    longLinkInput.value = "";
+    shortLinkInput.value = "";
+    postLink(longLink, optionalShortLink).catch((error) => {
+        console.log(error);
+        alert("An error occurred. Please try again.");
+    });
 }
 
-async function postUrl(originalUrl, userId) {
-    // userId is not required so users not logged in can create short links.
-    const json = {
-        "url": originalUrl,
-        "userId": userId,
+async function postLink(longLink, optionalShortLink) {
+    let json = {
+        "url": longLink,
+    };
+    if (optionalShortLink !== undefined && optionalShortLink !== "") {
+        json["custom"] = optionalShortLink;
     }
 
-    try {
-        const response = await axios.post(`${baseUrl}/v1/url`, json);
-        console.log(`status: ${response.status}`);
-        if (response.status >= 200 && response.status < 300) {
-            console.log(`data: ${response.data}`);
-            return response.data;
-        } else {
-            console.log(`status: ${response.status}`);
-        }
-    } catch (error) {
-        console.log(error);
+    const response = await axios.post(`${baseUrl}/v1/url`, json);
+    if (response.status < 200 || response.status >= 300) {
+        throw new Error(`response status: ${response.status}`);
     }
 }

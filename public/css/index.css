@@ -1,7 +1,3 @@
-* {
-    font-family: 'Poppins', sans-serif;
-}
-
 #formWrapper {
     width: 20%;
     padding: 2%;
@@ -13,12 +9,6 @@
 
 #linkForm {
     width: 100%;
-}
-
-#linkForm input {
-    padding: 8px 6px;
-    font-size: 20px;
-    border: solid 1px gray;
 }
 
 #submit {
@@ -51,11 +41,6 @@
     width: 96%;
 }
 
-#invalidLongLinkInput,
-#invalidShortLinkInput {
-    border: solid 1px red;
-}
-
 #shortLink {
     font-size: large;
     display: flex;
@@ -71,11 +56,6 @@
 
 @media only screen and (max-width: 1080px) {
     #formWrapper {
-        width: 100%;
-        padding: 1%;
-    }
-
-    #linkForm {
-        margin-left: 1%;
+        width: auto;
     }
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New link</title>
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/new-link.css">
+    <link rel="stylesheet" href="/public/css/common.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="/"><img src="/public/images/icons8-link-100.png" style="text-align: left;" /></a>
+      <nav style="text-align: right;">
+        <ul>
+          <li><a href="/public/index.html">Home</a></li>
+          <li><a href="/public/about.html">About</a></li>
+          <li><a href="/public/metrics.html">Metrics</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div id="resultsWrapper">
+        <div id="results">
+          <p>Original link:</p>
+          <input id="longLink" type="text" readonly="true" value="<%= longLink %>" />
+
+          <p style="margin-top: 20px;">New link:</p>
+          <div id="shortLinkWrapper">
+            <input id="shortLink" type="text" readonly="true" value="makemeshort.buzz/<%= shortLink %>" />
+            <button id="copyButton" onclick="copyToClipboard()">
+              <img src="/public/images/clipboard-copy.svg" />
+            </button>
+          </div>
+
+          <img id="qrCode" src="<%= qrCode %>" />
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank"
+        href="https://icons8.com">Icons8</a>
+    </footer>
+  </body>
+
+  <script src="/public/js/new-link.js"></script>
+
+</html>

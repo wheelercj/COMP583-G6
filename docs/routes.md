@@ -59,18 +59,14 @@ sample response:
 
 `POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
 
+A successful response will always direct the user to a new page with the new short link's information.
+
 sample request body where the user is NOT logged in:
 
 ```json
 {
     "url": "https://expressjs.com/en/guide/routing.html"
 }
-```
-
-and its response (a randomly generated short link):
-
-```json
-"KX6wpCY"
 ```
 
 another sample request body, and this time the user is logged in:
@@ -85,12 +81,6 @@ another sample request body, and this time the user is logged in:
 }
 ```
 
-and its response (a randomly generated short link):
-
-```json
-"KX6wpCY"
-```
-
 another sample request body where the logged in user wants to create a custom short link:
 
 ```json
@@ -103,8 +93,6 @@ another sample request body where the logged in user wants to create a custom sh
     "userId": 4
 }
 ```
-
-When a custom link to redirect from is given, there is no JSON response.
 
 ### get a link's metrics
 

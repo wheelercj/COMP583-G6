@@ -8,8 +8,8 @@ const db = new DB();
 
 
 /*
-    Creates a new short URL (either random or custom). If a random short URL is created,
-    returns the short URL.
+    Creates a new short URL (either random or custom) and directs the user to a new page
+    with the short URL and its QR code.
 */
 urlRouter.post("/", async function (req, res) {
     const token = req.body.token;
@@ -39,14 +39,20 @@ urlRouter.post("/", async function (req, res) {
             isValidShortUrl(shortUrl)
             && await createCustomShortUrl(originalUrl, shortUrl, userId)
         ) {
-            res.status(204).send();
+            res.render("new-link", {
+                shortLink: shortUrl,
+                qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://makemeshort.buzz/${shortUrl}`,
+            });
         } else {
             res.status(400).send();
         }
     } else {
         shortUrl = await createRandomShortUrl(originalUrl, userId);
         if (shortUrl) {
-            res.json(shortUrl);
+            res.render("new-link", {
+                shortLink: shortUrl,
+                qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://makemeshort.buzz/${shortUrl}`,
+            });
         } else {
             res.status(400).send();
         }
