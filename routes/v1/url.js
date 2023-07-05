@@ -41,6 +41,7 @@ urlRouter.post("/", async function (req, res) {
         ) {
             res.render("new-link", {
                 shortLink: shortUrl,
+                longLink: originalUrl,
                 qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://makemeshort.buzz/${shortUrl}`,
             });
         } else {
@@ -51,6 +52,7 @@ urlRouter.post("/", async function (req, res) {
         if (shortUrl) {
             res.render("new-link", {
                 shortLink: shortUrl,
+                longLink: originalUrl,
                 qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://makemeshort.buzz/${shortUrl}`,
             });
         } else {
