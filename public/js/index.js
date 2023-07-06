@@ -48,7 +48,10 @@ async function postLink(longLink, optionalShortLink) {
     }
 
     const response = await axios.post(`${baseUrl}/v1/url`, json);
-    if (response.status < 200 || response.status >= 300) {
+    if (response.status === 409) {
+        alert("Custom link already in use. Please choose a different one.");
+        return;
+    } else if (response.status < 200 || response.status >= 300) {
         throw new Error(`response status: ${response.status}`);
     }
     const shortLink = response.data;

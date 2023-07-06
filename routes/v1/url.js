@@ -41,7 +41,7 @@ urlRouter.post("/", async function (req, res) {
         ) {
             res.send(shortUrl);
         } else {
-            res.status(400).send();
+            res.status(409).send();
         }
     } else {
         shortUrl = await createRandomShortUrl(originalUrl, userId);
