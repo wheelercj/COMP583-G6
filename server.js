@@ -38,6 +38,20 @@ app.get("/", function (req, res) {
 });
 
 
+// Directs to a page that shows a new link and the link it redirects to.
+app.get("/new-link", function (req, res) {
+    if (req.query.new === undefined || req.query.original === undefined) {
+        res.status(400).send();
+        return;
+    }
+    res.render("new-link", {
+        shortLink: req.query.new,
+        longLink: req.query.original,
+        qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://makemeshort.buzz/${req.query.new}`
+    });
+});
+
+
 // Redirects to the original URL if the short URL exists.
 app.get("/:shortUrl", async function (req, res) {
     if (req.params.shortUrl === undefined) {

@@ -57,9 +57,7 @@ sample response:
 
 ### create a new short link (either random or custom)
 
-`POST <baseUrl>/v1/url` expects a JSON object and may return a JSON object
-
-A successful response will always direct the user to a new page with the new short link's information.
+`POST <baseUrl>/v1/url` expects a JSON object and returns a JSON object
 
 sample request body where the user is NOT logged in:
 
@@ -67,6 +65,12 @@ sample request body where the user is NOT logged in:
 {
     "url": "https://expressjs.com/en/guide/routing.html"
 }
+```
+
+sample response:
+
+```json
+"status-codes"
 ```
 
 another sample request body, and this time the user is logged in:

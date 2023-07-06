@@ -51,4 +51,6 @@ async function postLink(longLink, optionalShortLink) {
     if (response.status < 200 || response.status >= 300) {
         throw new Error(`response status: ${response.status}`);
     }
+    const shortLink = response.data;
+    window.location.href = `/new-link?new=${shortLink}&original=${longLink}`;
 }
