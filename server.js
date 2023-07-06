@@ -63,7 +63,7 @@ app.get("/:shortUrl", async function (req, res) {
         await db.insertClick(results[0].id, req.ip);
         res.redirect(results[0].originalUrl);
     } else {
-        res.status(404).send();
+        res.status(404).sendFile("404.html", { root: "./public" });
     }
 });
 
