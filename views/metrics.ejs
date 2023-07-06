@@ -23,36 +23,48 @@
     </header>
 
     <main>
-      <h1>Link Metrics</h1>
-      <p>over the last 7 days</p>
-      <div class="customInput">
-        https://makemeshort.buzz/
-        <input id="shortUrlInput" type="text" value="<%= shortUrl %>" />
-        <input id="shortUrlSubmitButton" type="button" value="Submit" style="margin: 8px; width: auto; padding: 5px;" />
-      </div>
-      <p>redirects to: <%= originalUrl %>
-      </p>
+      <div id="wrapper">
+        <h1>Link metrics</h1>
+        <p>over the last 7 days</p>
+        <form id="form" action="">
+          <div id="shortLink">
+            <p>makemeshort.buzz/</p>
+            <input id="shortLinkInput" type="text" value="<%= shortUrl %>" />
+            <button id="smallSubmit" type="submit"><img src="/public/images/search.svg" /></button>
+          </div>
+          <p id="shortLinkError"></p>
+        </form>
+        <p><b>redirects to:</b>
+          <%= originalUrl %>
+        </p>
 
-      <div id="all-columns">
+        <div id="all-columns">
 
-        <div id="column1">
-          <br />
-          <%- graphImage %>
-        </div>
+          <div id="column1">
+            <br />
+            <%- graphImage %>
+          </div>
 
-        <div id="column2">
-          <p>total clicks: <%= clicks %>
-          </p>
-          <p>unique visitors: <%= uniqueVisitors %>
-          </p>
-          <br />
-          <p>locations:</p>
-          <% for (let i=0; i < locations.length; i++) { %>
-            <p>
-              <%= Math.round(locations[i].percent * 100) %>% from <%= locations[i].region %>, <%= locations[i].country
-                    %>
+          <div id="column2">
+            <p><b>total clicks:</b>
+              <%= clicks %>
             </p>
-            <% } %>
+            <p><b>unique visitors:</b>
+              <%= uniqueVisitors %>
+            </p>
+            <br />
+            <p><b>locations:</b></p>
+            <% if (locations.length===0) { %>
+              <p>no data</p>
+              <% } else { %>
+                <% for (let i=0; i < locations.length; i++) { %>
+                  <p>
+                    <%= Math.round(locations[i].percent * 100) %>% from <%= locations[i].region %>, <%=
+                          locations[i].country %>
+                  </p>
+                  <% } %>
+                    <% } %>
+          </div>
         </div>
       </div>
     </main>
@@ -62,21 +74,9 @@
         href="https://icons8.com">Icons8</a>
     </footer>
 
-    <script>
-      const shortUrlInput = document.getElementById('shortUrlInput');
-      const shortUrlSubmitButton = document.getElementById('shortUrlSubmitButton');
-
-      shortUrlSubmitButton.addEventListener('click', () => {
-        const shortUrl = shortUrlInput.value;
-        window.location.href = `/v1/metrics/${shortUrl}`;
-      });
-      shortUrlInput.addEventListener('keyup', (event) => {
-        if (event.keyCode === 13) {
-          event.preventDefault();
-          shortUrlSubmitButton.click();
-        }
-      });
-    </script>
   </body>
+
+  <script src="/public/js/validators.js"></script>
+  <script src="/public/js/metrics.js"></script>
 
 </html>

@@ -1,5 +1,77 @@
+#wrapper {
+    width: 35%;
+    padding: 2%;
+    margin: 0 auto;
+    border-radius: 10px;
+    justify-content: center;
+    background-color: snow;
+}
+
+#submit {
+    width: 100%;
+    padding: 8px 6px;
+    font-size: 20px;
+    border: solid 1px gray;
+    background-color: #109528;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+
+#smallSubmit {
+    margin-left: 2%;
+    padding: 8px 6px;
+    font-size: 20px;
+    border: solid 1px gray;
+    background-color: #109528;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+
+#submit:hover {
+    background-color: #0d7e1a;
+    cursor: pointer;
+}
+
+#form button:hover {
+    background-color: #325dc8;
+    cursor: pointer;
+}
+
+#shortLinkInput {
+    width: 96%;
+}
+
+#shortLink {
+    font-size: large;
+    display: flex;
+    align-items: center;
+}
+
+#shortLinkError {
+    height: 0;
+    color: red;
+    font-size: small;
+    text-align: left;
+}
+
 #all-columns {
     margin: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+#column2 {
+    margin-left: 25px;
+}
+
+@media only screen and (max-width: 1400px) {
+    #wrapper {
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #all-columns {
+        grid-template-columns: 1fr;
+    }
 }
