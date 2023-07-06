@@ -31,16 +31,19 @@ function validateShortUrl() {
 }
 
 function createShortLink(longLink, optionalShortLink) {
-    longLinkInput.value = "";
-    shortLinkInput.value = "";
-    postLink(longLink, optionalShortLink).catch((error) => {
-        console.log(error);
-        if (error.response !== undefined && error.response.status === 409) {
-            alert("Custom link already in use. Please choose a different one.");
-            return;
-        }
-        alert("An error occurred. Please try again.");
-    });
+    postLink(longLink, optionalShortLink)
+        .then((response) => {
+            longLinkInput.value = "";
+            shortLinkInput.value = "";
+        })
+        .catch((error) => {
+            console.log(error);
+            if (error.response !== undefined && error.response.status === 409) {
+                alert("Custom link already in use. Please choose a different one.");
+                return;
+            }
+            alert("An error occurred. Please try again.");
+        });
 }
 
 async function postLink(longLink, optionalShortLink) {
