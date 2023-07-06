@@ -33,7 +33,14 @@ function validateShortUrl() {
 function createShortLink(longLink, optionalShortLink) {
     longLinkInput.value = "";
     shortLinkInput.value = "";
-    postLink(longLink, optionalShortLink);
+    postLink(longLink, optionalShortLink).catch((error) => {
+        console.log(error);
+        if (error.response !== undefined && error.response.status === 409) {
+            alert("Custom link already in use. Please choose a different one.");
+            return;
+        }
+        alert("An error occurred. Please try again.");
+    });
 }
 
 async function postLink(longLink, optionalShortLink) {
@@ -45,16 +52,6 @@ async function postLink(longLink, optionalShortLink) {
     }
 
     const response = await axios.post(`${baseUrl}/v1/url`, json);
-    if (response.status === 409) {
-        alert("Custom link already in use. Please choose a different one.");
-        return;
-    }
-    if (response.status < 200 || response.status >= 300) {
-        const error = `response status: ${response.status}`;
-        console.log(error);
-        alert("An error occurred. Please try again.");
-        return;
-    }
     const shortLink = response.data;
     window.location.href = `/new-link?new=${shortLink}&original=${longLink}`;
 }
