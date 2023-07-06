@@ -33,10 +33,7 @@ function validateShortUrl() {
 function createShortLink(longLink, optionalShortLink) {
     longLinkInput.value = "";
     shortLinkInput.value = "";
-    postLink(longLink, optionalShortLink).catch((error) => {
-        console.log(error);
-        alert("An error occurred. Please try again.");
-    });
+    postLink(longLink, optionalShortLink);
 }
 
 async function postLink(longLink, optionalShortLink) {
@@ -51,8 +48,12 @@ async function postLink(longLink, optionalShortLink) {
     if (response.status === 409) {
         alert("Custom link already in use. Please choose a different one.");
         return;
-    } else if (response.status < 200 || response.status >= 300) {
-        throw new Error(`response status: ${response.status}`);
+    }
+    if (response.status < 200 || response.status >= 300) {
+        const error = `response status: ${response.status}`;
+        console.log(error);
+        alert("An error occurred. Please try again.");
+        return;
     }
     const shortLink = response.data;
     window.location.href = `/new-link?new=${shortLink}&original=${longLink}`;
