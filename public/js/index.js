@@ -1,5 +1,5 @@
 const baseUrl = "https://makemeshort.buzz";  // change to "http://localhost:3306" for local testing
-const linkForm = document.getElementById("linkForm");
+const form = document.getElementById("form");
 const longLinkInput = document.getElementById("longLinkInput");
 const shortLinkInput = document.getElementById("shortLinkInput");
 const shortLinkError = document.getElementById("shortLinkError");
@@ -9,7 +9,7 @@ longLinkInput.focus();
 shortLinkInput.onkeyup = () => {
     validateShortUrl();
 };
-linkForm.onsubmit = (event) => {
+form.onsubmit = (event) => {
     event.preventDefault();
     if (validateShortUrl() && longLinkInput.value.length > 0) {
         createShortLink(longLinkInput.value, shortLinkInput.value);

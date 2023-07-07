@@ -1,94 +1,53 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: sans-serif;
-    color: #050505;
-    background-size: cover;
-    background-position: center;
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#wrapper {
+    width: 20%;
+    padding: 2%;
+    margin: 0 auto;
+    border-radius: 10px;
     justify-content: center;
-}
-
-h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    text-align: center;
+    background-color: snow;
+    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.2);
 }
 
 form {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    margin: 0 auto;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
 }
 
 label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="password"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+#password-label {
+    margin-top: 15px;
 }
 
-input[type="submit"] {
-    display: block;
+input {
+    width: 96%;
+}
+
+#submit {
+    margin-top: 20px;
     width: 100%;
-    padding: 10px;
-    background-color: #008cba;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
+    padding: 8px 6px;
+    font-size: 20px;
+    border: solid 1px gray;
+    background-color: #109528;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+
+#submit:hover {
+    background-color: #0d7e1a;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
-    background-color: #006d9c;
-}
-
-.error-message {
-    color: red;
-    margin-bottom: 10px;
-}
-
-footer {
-    position: absolute;
-    bottom: 30px;
-    text-align: center;
-    left: 0;
-    right: 0;
-}
-
-.copyright-text {
-    background-color: rgb(194, 210, 240);
-    display: inline-block;
-    padding: 10px 30px;
-}
-
-.text-highlight {
-    color: white;
-}
-
-.text-highlight:hover {
-    color: rgb(37, 7, 206);
+@media only screen and (max-width: 1080px) {
+    #wrapper {
+        width: auto;
+    }
 }

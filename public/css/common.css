@@ -1,5 +1,6 @@
 * {
     font-family: 'Poppins', sans-serif;
+    color: #333;
 }
 
 html,
@@ -37,6 +38,7 @@ footer a {
 }
 
 nav {
+    text-align: right;
     float: right;
     margin-top: 24px;
     margin-right: 10px;
@@ -56,7 +58,6 @@ nav li {
 
 nav a {
     text-decoration: none;
-    color: #333;
 }
 
 nav a:hover {

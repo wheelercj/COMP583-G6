@@ -2,6 +2,7 @@
 <html lang="en-US">
 
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
     <link rel="stylesheet" href="/public/css/login.css">
@@ -12,7 +13,7 @@
   <body>
     <header>
       <a href="/"><img src="/public/images/icons8-link-100.png" style="text-align: left;" /></a>
-      <nav style="text-align: right;">
+      <nav>
         <ul>
           <li><a href="/public/index.html">Home</a></li>
           <li><a href="/public/metrics.html">Metrics</a></li>
@@ -20,17 +21,20 @@
         </ul>
       </nav>
     </header>
+
     <main>
-      <h1>Login</h1>
-      <form action="#" method="post">
-        <label for="username">Username<i class="fa fa-user"></i>:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password<i class="fa fa-key"></i>:</label>
-        <input type="password" id="password" name="password" required>
-        <input type="submit" value="Login">
-        <div class="error-message"></div>
-      </form>
+      <div id="wrapper">
+        <form action="">
+          <h1>Log in</h1>
+          <label id="email-label" for="email"><i class="fa fa-user"></i> Email</label>
+          <input id="email" type="email" name="email" required>
+          <label id="password-label" for="password"><i class="fa fa-key"></i> Password</label>
+          <input id="password" type="password" name="password" required>
+          <input id="submit" type="submit" value="Log in">
+        </form>
+      </div>
     </main>
+
     <footer>
       <a href="https://github.com/wheelercj/COMP583-G6/tree/main/public/privacy-policy.md">Privacy Policy</a> |
       <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank"

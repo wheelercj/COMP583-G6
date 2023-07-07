@@ -4,12 +4,6 @@
     padding: 0;
 }
 
-body {
-    background-size: cover;
-    font-family: sans-serif;
-    color: #333;
-}
-
 main {
     max-width: 800px;
     margin: 0 auto;
@@ -33,17 +27,4 @@ main li {
     font-size: 20px;
     margin-bottom: 10px;
     font-family: monospace;
-}
-
-.copyright-text {
-    display: inline-block;
-    padding: 10px 30px;
-}
-
-.text-highlight {
-    color: white;
-}
-
-.text-highlight:hover {
-    color: rgb(37, 7, 206);
 }
