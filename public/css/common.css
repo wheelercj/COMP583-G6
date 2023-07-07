@@ -68,6 +68,10 @@ main {
     flex-grow: 1;
 }
 
+form {
+    width: 100%;
+}
+
 input {
     padding: 8px 6px;
     font-size: 20px;
@@ -77,6 +81,21 @@ input {
 
 input::placeholder {
     color: #404040;
+}
+
+#submit {
+    width: 100%;
+    padding: 8px 6px;
+    font-size: 20px;
+    border: solid 1px gray;
+    background-color: #109528;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+
+#submit:hover {
+    background-color: #0d7e1a;
+    cursor: pointer;
 }
 
 /* mobile screen sizes */
