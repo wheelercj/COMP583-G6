@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/settings.css">
+    <link rel="stylesheet" href="/public/css/common.css">
+  </head>
+
+  <body>
+    <header>
+      <a href="/"><img src="/public/images/icons8-link-100.png" style="text-align: left;" /></a>
+      <nav>
+        <ul>
+          <li><a href="/public/index.html">Home</a></li>
+          <li><a href="/public/metrics.html">Metrics</a></li>
+          <li><a href="/public/about.html">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div id="wrapper">
+        <form action="">
+          <h1>Settings</h1>
+          <label id="email-label" for="email"> Email</label>
+          <input id="email" type="email" name="email" value="<%= email %>">
+          <label id="new-password-label" for="new-password"> New password</label>
+          <input id="new-password" type="password" name="new-password">
+          <label id="confirm-password-label" for="confirm-password"> Confirm password</label>
+          <input id="confirm-password" type="password" name="confirm-password">
+          <input id="submit" type="submit" value="Save">
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <a href="https://github.com/wheelercj/COMP583-G6/tree/main/public/privacy-policy.md">Privacy Policy</a> |
+      <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank"
+        href="https://icons8.com">Icons8</a>
+    </footer>
+  </body>
+
+</html>
