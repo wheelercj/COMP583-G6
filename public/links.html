@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links</title>
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/links.css">
+    <link rel="stylesheet" href="/public/css/common.css">
+  </head>
+
+  <body>
+    <header>
+      <a href="/"><img src="/public/images/icons8-link-100.png" style="text-align: left;" /></a>
+      <nav>
+        <ul>
+          <li><a href="/public/index.html">Home</a></li>
+          <li><a href="/public/metrics.html">Metrics</a></li>
+          <li><a href="/public/about.html">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div id="wrapper">
+        <h1>Links</h1>
+        <div id="links">
+          <ul>
+            <% for (let i=0; i < links.length; i++) { %>
+              <li>
+                <p>
+                  <%= links[i].shortLink %>
+                    <button id="open"><img src="/public/images/external-link.svg" /></button>
+                    <button id="copy"><img src="/public/images/clipboard-copy.svg" /></button>
+                    <button id="graph"><img src="/public/images/line-chart.svg" /></button>
+                    <button id="delete"><img src="/public/images/trash.svg" /></button>
+                </p>
+              </li>
+              <% } %>
+          </ul>
+        </div>
+    </main>
+
+    <footer>
+      <a href="https://github.com/wheelercj/COMP583-G6/tree/main/public/privacy-policy.md">Privacy Policy</a> |
+      <a target="_blank" href="https://icons8.com/icon/113527/link">Link</a> icon by <a target="_blank"
+        href="https://icons8.com">Icons8</a>
+    </footer>
+  </body>
+
+</html>
