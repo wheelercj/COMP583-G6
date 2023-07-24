@@ -24,6 +24,10 @@
     align-items: center;
 }
 
+#domainName {
+    margin-right: 1%;
+}
+
 #shortLinkError {
     height: 0;
     color: red;
