@@ -10,6 +10,16 @@ main {
     padding: 20px;
 }
 
+#wrapper {
+    width: 75%;
+    padding: 5%;
+    margin: 0 auto;
+    border-radius: 10px;
+    justify-content: center;
+    background-color: snow;
+    box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
 main h1 {
     font-size: 36px;
     margin-bottom: 20px;
@@ -27,4 +37,10 @@ main li {
     font-size: 20px;
     margin-bottom: 10px;
     font-family: monospace;
+}
+
+@media only screen and (max-width: 1400px) {
+    #wrapper {
+        width: auto;
+    }
 }
